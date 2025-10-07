@@ -2,3 +2,5 @@
 .vs/
 bin/
 obj/
+Wasla_Backend/appsettings*.json
+
