@@ -18,7 +18,15 @@ global using Wasla_Backend.Repositories.Implementation;
 global using Wasla_Backend.Services.Implementation;
 global using Wasla_Backend.Helpers.Response;
 global using Microsoft.Extensions.Options;
+global using MailKit.Security;
+global using MimeKit;
+global using MimeKit.Text;
+global using Wasla_Backend.Settings;
+global using Wasla_Backend.DTOs.Authentication;
 global using System.Net;
-global using System.Net.Mail;
-
+global using System.Text.Json;
+global using Wasla_Backend.Exceptions;
+global using Shoes_Ecommerce.Helpers.EmailSender;
+global using Wasla_Backend.Middlewares;
+global using Shoes_Ecommerce.Helpers.Images;
 

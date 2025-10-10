@@ -12,17 +12,17 @@
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddRole(string roleName, string lan = "en")
+        public async Task<IActionResult> AddRole(AddRoleDto addRoleDto, string lan = "en")
         {
-            if (string.IsNullOrWhiteSpace(roleName))
+            if (string.IsNullOrWhiteSpace(addRoleDto.RoleName))
                 return BadRequest(ResponseHelper.Fail("RoleNameRequired", lan));
 
-            var result = await _roleService.AddRoleAsync(roleName);
+            var result = await _roleService.AddRoleAsync(addRoleDto);
 
             if (!result.Succeeded)
                 return BadRequest(ResponseHelper.Fail("RoleAddFailed", lan, result.Errors));
 
-            return Ok(ResponseHelper.Success("RoleAddedSuccessfully", lan, roleName));
+            return Ok(ResponseHelper.Success("RoleAddedSuccessfully", lan, addRoleDto));
         }
 
         [HttpGet("user/{userId}")]

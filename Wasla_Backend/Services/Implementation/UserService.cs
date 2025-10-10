@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using Shoes_Ecommerce.Helpers.EmailSender;
-using Wasla_Backend.DTOs;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class UserService : IUserService
     {
@@ -25,6 +21,10 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task<IdentityResult> RegisterAsync(RegisterDto model)
         {
+            var existingUser = await _userRepository.GetUserByEmailAsync(model.Email);
+            if (existingUser != null)
+                throw new BadRequestException("Email already exists.");
+
             var user = _userFactory.CreateUser(model.Role);
 
             _mapper.Map(model, user);

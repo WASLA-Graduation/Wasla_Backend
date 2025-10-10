@@ -1,4 +1,4 @@
-﻿namespace Wasla_Backend.DTOs
+﻿namespace Wasla_Backend.DTOs.Authentication
 {
     public class RegisterDto
     {

@@ -1,6 +1,6 @@
 ﻿namespace Wasla_Backend.Data
 {
-    public class Context : IdentityDbContext<ApplicationUser>
+    public class Context : IdentityDbContext<ApplicationUser,ApplicationRole,string>
     {
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Driver> Drivers { get; set; }

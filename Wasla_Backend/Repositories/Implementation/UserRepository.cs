@@ -11,6 +11,8 @@
 
         public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
             => await _userManager.CreateAsync(user, password);
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+            => await _userManager.FindByEmailAsync(email)!;
 
     }
 

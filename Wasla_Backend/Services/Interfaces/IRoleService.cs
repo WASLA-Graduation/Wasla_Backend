@@ -2,8 +2,8 @@
 {
     public interface IRoleService
     {
-        Task<IdentityResult> AddRoleAsync(string roleName);
+        Task<IdentityResult> AddRoleAsync(AddRoleDto role);
         Task<IList<string>> GetUserRolesAsync(string userId);
-        Task<IList<IdentityRole>> GetAllRolesAsync();
+        Task<IList<ApplicationRole>> GetAllRolesAsync();
     }
 }

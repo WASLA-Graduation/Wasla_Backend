@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Mappings
+﻿using Wasla_Backend.DTOs.Authentication;
+
+namespace Wasla_Backend.Mappings
 {
     public class UserProfile : Profile
     {

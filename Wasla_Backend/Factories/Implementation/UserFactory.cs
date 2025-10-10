@@ -12,7 +12,7 @@
                 "restaurant" => new Restaurant(),
                 "gym" => new Gym(),
                 "technician" => new Technician(),
-                _ => throw new ArgumentException($"Unsupported role: {role}")
+                _ => throw new NotFoundException($"Unsupported role: {role}")
             };
         }
     }

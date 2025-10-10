@@ -1,5 +1,3 @@
-using Shoes_Ecommerce.Helpers.EmailSender;
-
 namespace Wasla_Backend
 {
     public class Program
@@ -13,9 +11,11 @@ namespace Wasla_Backend
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
                 );
             });
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                            .AddEntityFrameworkStores<Context>()
-                            .AddDefaultTokenProviders();
+
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<Context>()
+                .AddDefaultTokenProviders();
+
 
             #region Injection for Repsitory
 
@@ -54,6 +54,8 @@ namespace Wasla_Backend
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthorization();
 

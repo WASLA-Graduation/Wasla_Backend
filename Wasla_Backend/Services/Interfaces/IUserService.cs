@@ -1,4 +1,4 @@
-﻿using Wasla_Backend.DTOs;
+﻿using Wasla_Backend.DTOs.Authentication;
 
 namespace Wasla_Backend.Services.Interfaces
 {

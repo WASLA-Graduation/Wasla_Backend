@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Controllers
+﻿using Wasla_Backend.DTOs.Authentication;
+
+namespace Wasla_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,6 +16,9 @@
         [HttpPost("register")]
         public async Task<IActionResult> PreRegister(RegisterDto model, string lan = "en")
         {
+            if(!ModelState.IsValid)
+                return BadRequest(ResponseHelper.Fail("InvalidData", lan, ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
+
             if (model.Password != model.ConfirmPassword)
                 return BadRequest(ResponseHelper.Fail("PassMismatch", lan));
 
