@@ -28,24 +28,46 @@
         {
             context.Response.ContentType = "application/json";
 
-            var statusCode = ex switch
-            {
-                BadRequestException => HttpStatusCode.BadRequest,         // 400
-                NotFoundException => HttpStatusCode.NotFound,             // 404
-                UnauthorizedException => HttpStatusCode.Unauthorized,     // 401
-                ArgumentException => HttpStatusCode.BadRequest,           // 400
-                _ => HttpStatusCode.InternalServerError                   // 500
-            };
+            var lan = context.Request.Query["lan"].ToString();
+            if (string.IsNullOrWhiteSpace(lan))
+                lan = context.Request.Headers["Accept-Language"].ToString().Split(',').FirstOrDefault() ?? "en";
+            if (string.IsNullOrWhiteSpace(lan))
+                lan = "en";
 
-            var response = new
+            string messageKey;
+            HttpStatusCode statusCode;
+
+            switch (ex)
             {
-                success = false,
-                status = (int)statusCode,
-                message = ex.Message
-            };
+                case BadRequestException:
+                case ArgumentException:
+                    statusCode = HttpStatusCode.BadRequest;
+                    messageKey = "InvalidRequest";
+                    break;
+                case NotFoundException:
+                    statusCode = HttpStatusCode.NotFound;
+                    messageKey = "UserNotFound";
+                    break;
+                case UnauthorizedException:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    messageKey = "LoginFailed";
+                    break;
+                default:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    messageKey = "ServerError";
+                    break;
+            }
+
+            var response = ResponseHelper.Fail(messageKey, lan, ex.Message);
 
             context.Response.StatusCode = (int)statusCode;
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+
+            var json = JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            await context.Response.WriteAsync(json);
         }
     }
 }

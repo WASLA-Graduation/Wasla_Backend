@@ -5,33 +5,41 @@
         private readonly IRoleRepository _roleRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly string _imagePath;
+        private readonly IStringLocalizer<RoleService> _localizer;
 
-        public RoleService(IRoleRepository roleRepository, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public RoleService(
+            IRoleRepository roleRepository,
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment webHostEnvironment,
+            IStringLocalizer<RoleService> localizer
+        )
         {
             _roleRepository = roleRepository;
             _userManager = userManager;
+            _localizer = localizer;
             _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathRole.TrimStart('/'));
         }
 
         public async Task<IdentityResult> AddRoleAsync(AddRoleDto roleDto)
         {
             if (await _roleRepository.RoleExistsAsync(roleDto.RoleName))
-                throw new BadRequestException("Role already exists.");
+                throw new BadRequestException(_localizer["RoleAlreadyExists"]);
 
             var image = await Images.SaveImage(roleDto.Image, _imagePath);
 
-            var Role = new ApplicationRole();
-            
-            Role.Name = roleDto.RoleName;
-            Role.ImageUrl = image;
+            var role = new ApplicationRole
+            {
+                Name = roleDto.RoleName,
+                ImageUrl = image
+            };
 
-            return await _roleRepository.CreateRoleAsync(Role);
+            return await _roleRepository.CreateRoleAsync(role);
         }
 
         public async Task<IList<string>> GetUserRolesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId)
-                       ?? throw new NotFoundException("User not found.");
+                       ?? throw new NotFoundException(_localizer["UserNotFound"]);
 
             return await _roleRepository.GetUserRolesAsync(user);
         }
@@ -41,5 +49,4 @@
             return await _roleRepository.GetAllRolesAsync();
         }
     }
-
 }

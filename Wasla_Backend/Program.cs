@@ -18,23 +18,17 @@ namespace Wasla_Backend
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
             builder.Services.AddHostedService<ExpiredEmailVerificationCleaner>();
 
-            #region Injection for Repsitory
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddTransient<EmailSenderHelper>();
-            #endregion
 
-            #region Injection for Services
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<TokenHelper>();
-            #endregion
 
-            #region Injection for Factory
             builder.Services.AddScoped<IUserFactory, UserFactory>();
-            #endregion
 
             builder.Services.AddAuthentication(options =>
             {
@@ -57,6 +51,17 @@ namespace Wasla_Backend
             });
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en", "ar" };
+                options.SetDefaultCulture("en");
+                options.AddSupportedCultures(supportedCultures);
+                options.AddSupportedUICultures(supportedCultures);
+                options.ApplyCurrentCultureToResponseHeaders = true;
+            });
 
             builder.Services.AddCors(options =>
             {
@@ -81,6 +86,8 @@ namespace Wasla_Backend
             app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
+
+            app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseMiddleware<ExceptionMiddleware>();
 

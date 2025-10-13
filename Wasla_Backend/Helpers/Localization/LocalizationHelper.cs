@@ -9,15 +9,20 @@
                 ["en"] = "Invalid Request Data",
                 ["ar"] = "البيانات المطلوبة غير صالحة"
             },
+            ["InvalidData"] = new()
+            {
+                ["en"] = "Invalid data provided.",
+                ["ar"] = "تم تقديم بيانات غير صالحة."
+            },
             ["UserNameAlreadyExists"] = new()
             {
-                ["en"] = "UserName is already taken",
-                ["ar"] = "الاسم مستخدم بالفعل"
+                ["en"] = "Username is already taken.",
+                ["ar"] = "اسم المستخدم مستخدم بالفعل."
             },
             ["EmailAlreadyExists"] = new()
             {
-                ["en"] = "Email is already taken",
-                ["ar"] = "البريد الإلكتروني مستخدم بالفعل"
+                ["en"] = "Email is already taken.",
+                ["ar"] = "البريد الإلكتروني مستخدم بالفعل."
             },
             ["RegistrationSuccess"] = new()
             {
@@ -46,17 +51,19 @@
             },
             ["ChangePassSuccess"] = new()
             {
-                ["en"] = "The password has been changed successfully.",
+                ["en"] = "Password changed successfully.",
                 ["ar"] = "تم تغيير كلمة المرور بنجاح."
             },
-
-
             ["ChangePasswordFailed"] = new()
             {
                 ["en"] = "Failed to change the password.",
                 ["ar"] = "فشل في تغيير كلمة المرور."
             },
-
+            ["ChangePassFailed"] = new()
+            {
+                ["en"] = "Failed to reset the password.",
+                ["ar"] = "فشل في إعادة تعيين كلمة المرور."
+            },
             ["PassFailed"] = new()
             {
                 ["en"] = "Password is incorrect.",
@@ -80,7 +87,7 @@
             ["LoginSuccess"] = new()
             {
                 ["en"] = "User logged in successfully.",
-                ["ar"] = "تم تسجيل دخول المستخدم بنجاح."
+                ["ar"] = "تم تسجيل الدخول بنجاح."
             },
             ["LoginFailed"] = new()
             {
@@ -137,7 +144,17 @@
                 ["en"] = "Failed to send verification code.",
                 ["ar"] = "فشل في إرسال رمز التحقق."
             },
-            ["InvalidToken"] =new()
+            ["EmailVerificationFailed"] = new()
+            {
+                ["en"] = "Email verification failed.",
+                ["ar"] = "فشل التحقق من البريد الإلكتروني."
+            },
+            ["EmailVerified"] = new()
+            {
+                ["en"] = "Email verified successfully.",
+                ["ar"] = "تم التحقق من البريد الإلكتروني بنجاح."
+            },
+            ["InvalidToken"] = new()
             {
                 ["en"] = "Invalid refresh token.",
                 ["ar"] = "رمز التحديث غير صالح."
@@ -146,6 +163,11 @@
             {
                 ["en"] = "Token refreshed successfully.",
                 ["ar"] = "تم تحديث الرمز بنجاح."
+            },
+            ["ServerError"] = new()
+            {
+                ["en"] = "An unexpected error occurred. Please try again later.",
+                ["ar"] = "حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
             }
         };
 
@@ -153,7 +175,6 @@
         {
             if (messages.ContainsKey(key) && messages[key].ContainsKey(lan))
                 return messages[key][lan];
-
             return "An error occurred.";
         }
     }

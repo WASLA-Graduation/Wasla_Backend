@@ -1,6 +1,4 @@
-﻿using Wasla_Backend.DTOs.Authentication;
-
-namespace Wasla_Backend.Controllers
+﻿namespace Wasla_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

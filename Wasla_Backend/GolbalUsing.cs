@@ -37,4 +37,5 @@ global using Wasla_Backend.Helpers;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Security.Cryptography;
+global using Microsoft.Extensions.Localization;
 
