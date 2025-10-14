@@ -68,6 +68,16 @@ namespace Wasla_Backend.Services.Implementation
             return IdentityResult.Success;
         }
 
+        public async Task approveAndVerify(string gmail)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(gmail);
+            user.IsApproved = true;
+            user.IsVerified = true;
+            await _userManager.UpdateAsync(user);
+
+
+        }
+
         public async Task<IdentityResult> ForgetPasswordAsync(ForgetPasswordDto model)
         {
             var user = await _userRepository.GetUserByEmailAsync(model.Email);

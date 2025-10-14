@@ -67,6 +67,13 @@
             return Ok(ResponseHelper.Success("EmailVerified", lan, result));
         }
 
+        [HttpPost("approve-verify")]
+        public async Task<IActionResult> ApproveAndVerify([FromQuery] string gmail, string lan = "en")
+        {
+            await _userService.approveAndVerify(gmail);
+            return Ok();
+        }
+
         [HttpPost("check-mail-verification")]
         public async Task<IActionResult> CheckMailForVerification([FromBody] CheckMailDto model, string lan = "en")
         {

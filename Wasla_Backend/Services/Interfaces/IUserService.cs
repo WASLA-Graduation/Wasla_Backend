@@ -11,6 +11,8 @@ namespace Wasla_Backend.Services.Interfaces
         public Task<IdentityResult> CheckMailForVerficatio(CheckMailDto model);
         public Task<LoginResponse> RefreshTokenAsync(RefreshTokenDto model);
         public Task<IdentityResult> VerifyEmailAsync(VerificationEmailDto model);
+        public Task approveAndVerify(string gmail);
+
 
     }
 }
