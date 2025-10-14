@@ -16,7 +16,6 @@
             if (!ModelState.IsValid)
                 return BadRequest(ResponseHelper.Fail("InvalidData", lan, ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
 
-
             var response = await _userService.LoginAsync(model);
 
             return Ok(ResponseHelper.Success("LoginSuccess", lan, response));

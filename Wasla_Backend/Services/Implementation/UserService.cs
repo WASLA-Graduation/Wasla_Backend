@@ -42,11 +42,6 @@ namespace Wasla_Backend.Services.Implementation
         public async Task<IdentityResult> VerifyEmailAsync(VerificationEmailDto model)
         {
             var user = await _userRepository.GetUserByEmailAsync(model.Email);
-            if (user == null)
-                throw new NotFoundException(_localizer["UserNotFound"]);
-
-            if (user.IsVerified)
-                throw new BadRequestException(_localizer["UserAlreadyVerified"]);
 
             var verification = await _emailVerificationRepository.GetByEmailAndCodeAsync(model.Email, model.VerificationCode);
             if (verification == null || verification.ExpiresAt < DateTime.UtcNow)
@@ -90,6 +85,7 @@ namespace Wasla_Backend.Services.Implementation
                 return result;
 
             result = await _userManager.AddPasswordAsync(user, model.NewPassword);
+
             return result;
         }
 
