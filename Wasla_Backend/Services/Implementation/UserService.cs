@@ -119,7 +119,7 @@ namespace Wasla_Backend.Services.Implementation
         {
             var user = await _userRepository.GetUserByEmailAsync(model.Email);
             if (user == null)
-                throw new NotFoundException(_localizer["UserNotFound"]);
+                throw new NotFoundException(_localizer["EmailNotFound"]);
 
             if (!user.IsVerified)
                 throw new BadRequestException(_localizer["UserNotVerified"]);

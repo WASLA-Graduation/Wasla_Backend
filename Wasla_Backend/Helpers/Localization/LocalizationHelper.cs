@@ -129,6 +129,46 @@
                 ["en"] = "No roles found.",
                 ["ar"] = "لم يتم العثور على أدوار."
             },
+            ["InvalidOrExpiredCode"] = new()
+            {
+                ["en"] = "Invalid or expired verification code.",
+                ["ar"] = "رمز التحقق غير صالح أو منتهي."
+            },
+            ["UserNotVerified"] = new()
+            {
+                ["en"] = "User email is not verified.",
+                ["ar"] = "لم يتم التحقق من بريد المستخدم."
+            },
+            ["UserNotApproved"] = new()
+            {
+                ["en"] = "User is not approved yet.",
+                ["ar"] = "المستخدم لم يتم الموافقة عليه بعد."
+            },
+            ["IncorrectPassword"] = new()
+            {
+                ["en"] = "The email or password is incorrect.",
+                ["ar"] = "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+            },
+            ["EmailNotFound"] = new()
+            {
+                ["en"] = "The email or password is incorrect.",
+                ["ar"] = "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+            },
+            ["EmailExists"] = new()
+            {
+                ["en"] = "Email already exists.",
+                ["ar"] = "البريد الإلكتروني موجود بالفعل."
+            },
+            ["Unauthorized"] = new()
+            {
+                ["en"] = "Unauthorized access.",
+                ["ar"] = "دخول غير مصرح به."
+            },
+            ["InvalidRefreshToken"] = new()
+            {
+                ["en"] = "Invalid or expired refresh token.",
+                ["ar"] = "رمز التحديث غير صالح أو منتهي."
+            },
             ["AllRolesRetrieved"] = new()
             {
                 ["en"] = "All roles retrieved successfully.",
@@ -153,6 +193,11 @@
             {
                 ["en"] = "Email verified successfully.",
                 ["ar"] = "تم التحقق من البريد الإلكتروني بنجاح."
+            },
+            ["UserNotFound"] = new()
+            {
+                ["en"] = "User not found.",
+                ["ar"] = "لم يتم العثور على المستخدم."
             },
             ["InvalidToken"] = new()
             {
