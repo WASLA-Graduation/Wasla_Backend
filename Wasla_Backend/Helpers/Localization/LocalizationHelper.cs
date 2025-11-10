@@ -213,7 +213,18 @@
             {
                 ["en"] = "An unexpected error occurred. Please try again later.",
                 ["ar"] = "حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
-            }
+            },
+            ["CompleteDataSuccess"] = new()
+            {
+                ["en"] = "Doctor data completed successfully",
+                ["ar"] = "تم استكمال بيانات الطبيب بنجاح"
+            },
+            ["FetchDoctorSpecializationsSuccess"] = new()
+            {
+                ["en"] = "Doctor specializations fetched successfully",
+                ["ar"] = "تم جلب تخصصات الأطباء بنجاح"
+            },
+
         };
 
         public static string GetLocalizedMessage(string key, string lan)

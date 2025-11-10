@@ -2,12 +2,12 @@
 {
     public abstract class ApplicationUser : IdentityUser
     {
-        public string? FirstName { get; set; } 
-        public string? LastName { get; set; } 
+        public string? FullName { get; set; } 
         public string? ProfilePhoto { get; set; } 
         public string? Phone { get; set; } 
         public string? Address { get; set; } 
         public char Gender { get; set; }
+        public string? BirthDay { get; set; }
         public bool IsApproved { get; set; }
         public bool IsVerified { get; set; }
         public UserStatus Status { get; set; } = UserStatus.Pending;

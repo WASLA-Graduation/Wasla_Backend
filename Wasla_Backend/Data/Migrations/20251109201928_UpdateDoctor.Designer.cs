@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wasla_Backend.Data;
 
@@ -11,9 +12,11 @@ using Wasla_Backend.Data;
 namespace Wasla_Backend.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20251109201928_UpdateDoctor")]
+    partial class UpdateDoctor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,9 +172,6 @@ namespace Wasla_Backend.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BirthDay")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -186,7 +186,7 @@ namespace Wasla_Backend.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
@@ -201,6 +201,9 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -375,7 +378,7 @@ namespace Wasla_Backend.Data.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
-                    b.Property<int?>("SpecializationId")
+                    b.Property<int>("SpecializationId")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalReviews")
@@ -635,8 +638,7 @@ namespace Wasla_Backend.Data.Migrations
                                 .HasForeignKey("DoctorSpecializationId");
                         });
 
-                    b.Navigation("Specialization")
-                        .IsRequired();
+                    b.Navigation("Specialization");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.Doctor", b =>
@@ -650,7 +652,8 @@ namespace Wasla_Backend.Data.Migrations
                     b.HasOne("Wasla_Backend.Models.DoctorSpecialization", "Specialization")
                         .WithMany()
                         .HasForeignKey("SpecializationId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Specialization");
                 });

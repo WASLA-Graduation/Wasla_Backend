@@ -18,14 +18,17 @@ namespace Wasla_Backend
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
             builder.Services.AddHostedService<ExpiredEmailVerificationCleaner>();
 
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddTransient<EmailSenderHelper>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<TokenHelper>();
 
             builder.Services.AddScoped<IUserFactory, UserFactory>();

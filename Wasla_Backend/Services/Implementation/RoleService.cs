@@ -25,7 +25,7 @@
             if (await _roleRepository.RoleExistsAsync(roleDto.RoleName))
                 throw new BadRequestException(_localizer["RoleAlreadyExists"]);
 
-            var image = await Images.SaveImage(roleDto.Image, _imagePath);
+            var image = await FileOperation.SaveFile(roleDto.Image, _imagePath);
 
             var role = new ApplicationRole
             {
