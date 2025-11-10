@@ -184,8 +184,15 @@ namespace Wasla_Backend.Services.Implementation
         public async Task<LoginResponse> RefreshTokenAsync(RefreshTokenDto model)
         {
             var refreshToken = await _refreshTokenRepository.GetByTokenAsync(model.RefreshToken);
-            if (refreshToken == null || refreshToken.ExpiresAt < DateTime.UtcNow)
+            if (refreshToken == null )
                 throw new BadRequestException(_localizer["InvalidRefreshToken"]);
+            if (refreshToken.ExpiresAt < DateTime.UtcNow)
+            {
+
+                _refreshTokenRepository.Delete(refreshToken);
+                await _refreshTokenRepository.SaveChangesAsync();
+                throw new BadRequestException(_localizer["ExpiredRefreshToken"]);
+            }
 
             var user = await _userRepository.GetUserByIdAsync(refreshToken.UserId);
             if (user == null)
@@ -194,8 +201,6 @@ namespace Wasla_Backend.Services.Implementation
             var roles = await _roleRepository.GetUserRolesAsync(user);
             var token = _TokenHelper.GenerateToken(user, roles);
 
-            _refreshTokenRepository.Delete(refreshToken);
-           await _refreshTokenRepository.SaveChangesAsync();
 
 
 
