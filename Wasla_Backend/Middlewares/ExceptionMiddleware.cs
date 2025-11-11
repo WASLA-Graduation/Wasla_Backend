@@ -42,23 +42,22 @@
                 case BadRequestException:
                 case ArgumentException:
                     statusCode = HttpStatusCode.BadRequest;
-                    messageKey = "InvalidRequest";
                     break;
+
                 case NotFoundException:
                     statusCode = HttpStatusCode.NotFound;
-                    messageKey = "UserNotFound";
                     break;
+
                 case UnauthorizedException:
                     statusCode = HttpStatusCode.Unauthorized;
-                    messageKey = "LoginFailed";
                     break;
+
                 default:
                     statusCode = HttpStatusCode.InternalServerError;
-                    messageKey = "ServerError";
                     break;
             }
 
-            var response = ResponseHelper.Fail(messageKey, lan, ex.Message);
+            var response = ResponseHelper.Fail(ex.Message, lan, ex.Message);
 
             context.Response.StatusCode = (int)statusCode;
 
