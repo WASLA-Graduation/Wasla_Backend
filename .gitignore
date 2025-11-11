@@ -5,4 +5,5 @@ obj/
 Wasla_Backend/appsettings*.json
 Wasla_Backend/Properties/
 Wasla_Backend/*.csproj.user
+Wasla_Backend/wwwroot/
 
