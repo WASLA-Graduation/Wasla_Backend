@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Controllers
+﻿using Wasla_Backend.DTOs.RoleDTOS;
+
+namespace Wasla_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +16,7 @@
         [HttpPost("add")]
         public async Task<IActionResult> AddRole(AddRoleDto addRoleDto, string lan = "en")
         {
-            if (string.IsNullOrWhiteSpace(addRoleDto.RoleName))
+            if (string.IsNullOrWhiteSpace(addRoleDto.Value))
                 return BadRequest(ResponseHelper.Fail("RoleNameRequired", lan));
 
             var result = await _roleService.AddRoleAsync(addRoleDto);
@@ -42,12 +44,12 @@
         [HttpGet]
         public async Task<IActionResult> GetAllRoles(string lan = "en")
         {
-            var roles = await _roleService.GetAllRolesAsync();
+            var roles = await _roleService.GetAllRolesAsync(lan);
 
             if (roles == null || !roles.Any())
                 return BadRequest(ResponseHelper.Fail("NoRolesFound", lan));
 
-            return Ok(ResponseHelper.Success("AllRolesRetrieved", lan, roles.Select(r => r.Name)));
+            return Ok(ResponseHelper.Success("AllRolesRetrieved", lan, roles));
         }
     }
 }

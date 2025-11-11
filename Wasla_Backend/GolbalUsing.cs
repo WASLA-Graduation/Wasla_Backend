@@ -42,7 +42,7 @@ global using Wasla_Backend.Middlewares;
 global using Wasla_Backend.Helpers.File;
 global using Wasla_Backend.DTOs.DoctorDTO;
 global using Wasla_Backend.DTOs.ResidentDTOS;
-
+global using Wasla_Backend.DTOs.RoleDTOS;
 
 
 
