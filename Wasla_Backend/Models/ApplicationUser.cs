@@ -9,8 +9,9 @@
         public double Longitude { get; set; }
         public char Gender { get; set; }
         public string? BirthDay { get; set; }
-        public bool IsApproved { get; set; }
-        public bool IsVerified { get; set; }
+        public bool IsApproved { get; set; }=false;
+        public bool IsVerified { get; set; }=false;
+        public bool IsCompleteRegistration { get; set; }=false;
         public UserStatus Status { get; set; } = UserStatus.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLogin { get; set; }

@@ -42,7 +42,7 @@ namespace Wasla_Backend.Services.Implementation
 
             _mapper.Map(model, resident);
             resident.ProfilePhoto = await FileOperation.SaveFile(model.Image, _imagePath);
-
+            resident.IsCompleteRegistration = true;
             _ResidentRepository.Update(resident);
             await _ResidentRepository.SaveChangesAsync();
 

@@ -69,6 +69,7 @@
             var user = await _userRepository.GetUserByEmailAsync(gmail);
             user.IsApproved = true;
             user.IsVerified = true;
+            user.Status = 0;
             await _userManager.UpdateAsync(user);
         }
 
@@ -78,11 +79,7 @@
             if (user == null)
                 throw new NotFoundException("UserNotFound");
 
-            if (!user.IsVerified)
-                throw new BadRequestException("UserNotVerified");
-
-            if (!user.IsApproved)
-                throw new BadRequestException("UserNotApproved");
+           
 
             var result = await _userManager.RemovePasswordAsync(user);
             if (!result.Succeeded)
@@ -115,12 +112,9 @@
             if (user == null)
                 throw new NotFoundException("EmailNotFound");
 
-            if (!user.IsVerified)
-                throw new BadRequestException("UserNotVerified");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
-            if (!user.IsApproved)
-                throw new BadRequestException("UserNotApproved");
+        
 
             if (!isPasswordValid)
                 throw new BadRequestException("IncorrectPassword");
@@ -134,7 +128,11 @@
                 Token = token,
                 UserId = user.Id,
                 Role = roles.FirstOrDefault(),
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                IsCompletedRegister=user.IsCompleteRegistration,
+                IsVerfied=user.IsVerified
+                ,statue=user.Status
+
             };
 
             var refreshtoken = new RefreshToken
