@@ -94,6 +94,12 @@ namespace Wasla_Backend
             app.UseCors("AllowAll");
 
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                c.RoutePrefix = string.Empty; 
+            });
 
             app.UseMiddleware<ExceptionMiddleware>();
 
