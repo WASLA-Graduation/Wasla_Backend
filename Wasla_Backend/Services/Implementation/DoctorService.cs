@@ -39,6 +39,7 @@ namespace Wasla_Backend.Services.Implementation
             
             doctor.ProfilePhoto = image;
             doctor.CV = cv;
+            doctor.IsCompleteRegistration = true;
 
             _doctorRepository.Update(doctor);
             await _doctorRepository.SaveChangesAsync();
