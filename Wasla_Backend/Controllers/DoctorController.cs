@@ -24,5 +24,11 @@
             var specializations = await _doctorService.DoctorSpecializations(lan);
             return Ok(ResponseHelper.Success("FetchDoctorSpecializationsSuccess", lan, specializations));
         }
+        [HttpGet("GetDoctorProfile/{id}")]
+        public async Task<IActionResult> GetDoctorProfile(string id, string lan = "en")
+        {
+            var doctorProfiles = await _doctorService.GetDoctorProfile(id, lan);
+            return Ok(ResponseHelper.Success("FetchDoctorProfileSuccess", lan, doctorProfiles));
+        }
     }
 }
