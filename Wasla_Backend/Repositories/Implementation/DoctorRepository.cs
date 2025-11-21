@@ -17,6 +17,12 @@ namespace Wasla_Backend.Repositories.Implementation
                 .OfType<Doctor>()
                 .FirstOrDefaultAsync(d => d.Email == email);
         }
-
+        public async Task<Doctor> GetById(string id)
+        {
+            return await _userManager.Users
+                .OfType<Doctor>()
+                .Include(d => d.Specialization)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
     }
 }

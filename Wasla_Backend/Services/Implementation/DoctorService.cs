@@ -7,10 +7,10 @@ namespace Wasla_Backend.Services.Implementation
     {
         private readonly IDoctorRepository _doctorRepository;
         private readonly IMapper _mapper;
-        private readonly IStringLocalizer<DoctorService> _localizer;
         private readonly IGenericRepository<DoctorSpecialization> _doctorSpecializationRepository;
         private readonly string _imagePath;
         private readonly string _cvPath;
+
 
         public DoctorService(IDoctorRepository doctorRepository, 
             IWebHostEnvironment webHostEnvironment, 
@@ -20,7 +20,6 @@ namespace Wasla_Backend.Services.Implementation
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
-            _localizer = localizer;
             _doctorSpecializationRepository = doctorSpecializationRepository;
             _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathUser.TrimStart('/'));
             _cvPath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.PathCVDoctor.TrimStart('/'));
@@ -30,7 +29,7 @@ namespace Wasla_Backend.Services.Implementation
             var doctor = await _doctorRepository.GetByEmail(doctorCompleteDto.Email);
             
             if(doctor == null)
-                throw new NotFoundException(_localizer["UserNotFound"]);
+                throw new NotFoundException("UserNotFound");
 
             _mapper.Map(doctorCompleteDto, doctor);
 
@@ -57,6 +56,20 @@ namespace Wasla_Backend.Services.Implementation
             });
 
             return SpecializationResponse;
+        }
+        public async Task<IEnumerable<DoctorProfileResponse>> GetDoctorProfile(string id , string lan)
+        {
+            var doctor = await _doctorRepository.GetById(id);
+            
+            if (doctor == null)
+                throw new NotFoundException("DoctorNotFound");
+
+            var doctorProfileResponses = _mapper.Map<IEnumerable<DoctorProfileResponse>>(doctor, opt =>
+            {
+                opt.Items["lan"] = lan;
+            });
+
+            return doctorProfileResponses;
         }
     }
 }
