@@ -259,8 +259,12 @@
             {
                 ["en"] = "User deleted successfully",
                 ["ar"] = "تم حذف المستخدم بنجاح"
+            },
+            ["FetchDoctorProfileSuccess"] = new()
+            {
+                ["en"] = "Doctor profile fetched successfully.",
+                ["ar"] = "تم جلب ملف الطبيب بنجاح."
             }
-
         };
 
         public static string GetLocalizedMessage(string key, string lan)
