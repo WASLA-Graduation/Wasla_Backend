@@ -90,7 +90,7 @@ namespace Wasla_Backend
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseCors("AllowAll");
 
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
