@@ -29,8 +29,17 @@
             builder.Entity<Gym>().ToTable("Gym");
             builder.Entity<Resident>().ToTable("Resident");
             builder.Entity<Restaurant>().ToTable("Restaurant");
-            builder.Entity<ApplicationRole>().Ignore(r => r.RoleName);
             builder.Entity<DoctorSpecialization>().Ignore(d => d.Specialization);
+
+            builder.Entity<ApplicationRole>(entity =>
+            {
+                entity.OwnsOne(r => r.RoleName, sa =>
+                {
+                    sa.Property(p => p.English).HasColumnName("RoleName_English");
+                    sa.Property(p => p.Arabic).HasColumnName("RoleName_Arabic");
+                    sa.WithOwner();
+                });
+            });
 
             builder.Entity<Service>(entity =>
             {
