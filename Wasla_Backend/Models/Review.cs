@@ -1,6 +1,6 @@
 ﻿namespace Wasla_Backend.Models
 {
-    public class Review
+    public class Reviews
     {
         public int Id { get; set; }
         public string ReviewerName { get; set; }
@@ -13,8 +13,7 @@
 
         public string ServiceProviderId { get; set; }
 
-        [ForeignKey("ServiceProviderId")]
-        public ServiceProvider ServiceProvider { get; set; }
+  
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
