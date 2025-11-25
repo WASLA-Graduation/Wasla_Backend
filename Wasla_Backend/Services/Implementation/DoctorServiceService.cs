@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Services.Implementation
+﻿using System.Data;
+
+namespace Wasla_Backend.Services.Implementation
 {
     public class DoctorServiceService : IDoctorServiceService
     {
@@ -163,27 +165,21 @@
 
         public async Task Book(BookServiceDto bookServiceDto)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-
-            var service =await _doctorServiceRepository.GetByIdAsync(bookServiceDto.ServiceId);
+            var service = await _doctorServiceRepository.GetByIdAsync(bookServiceDto.ServiceId);
             if (service == null)
-            {
                 throw new NotFoundException("ServiceNotFound");
-            }
+
             var user = await _userRepository.GetUserByIdAsync(bookServiceDto.UserId);
             if (user == null)
-            {
                 throw new NotFoundException("UserNotFound");
-            }
+
             var serviceProvider = await _userRepository.GetUserByIdAsync(bookServiceDto.ServiceProviderId);
             if (serviceProvider == null)
-            {
                 throw new NotFoundException("ServiceProviderNotFound");
-            }
+
             if (service.isbooked)
-            {
                 throw new BadRequestException("ServiceAlreadyBooked");
-            }
+
             var booking = new Booking
             {
                 UserId = bookServiceDto.UserId,
@@ -193,14 +189,23 @@
                 ServiceProviderType = bookServiceDto.ServiceProviderType,
                 BookingDate = DateTime.Now
             };
+
             service.isbooked = true;
             _doctorServiceRepository.Update(service);
             await _bookingRepository.AddAsync(booking);
-           
-           await _doctorServiceRepository.SaveChangesAsync();
-            await transaction.CommitAsync();
 
+            try
+            {
+                await _doctorServiceRepository.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException?.Message.Contains("IX_Booking_ServiceId") == true)
+                    throw new BadRequestException("ServiceAlreadyBooked");
 
+                throw;
+            }
         }
+
     }
 }

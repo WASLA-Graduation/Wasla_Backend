@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wasla_Backend.Data;
 
@@ -11,9 +12,11 @@ using Wasla_Backend.Data;
 namespace Wasla_Backend.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20251125134058_AddUniqueIndexToBooking")]
+    partial class AddUniqueIndexToBooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,7 +300,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Booking", (string)null);
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.DoctorSpecialization", b =>
@@ -310,7 +313,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoctorSpecializations", (string)null);
+                    b.ToTable("DoctorSpecializations");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.EmailVerification", b =>
@@ -337,7 +340,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailVerifications", (string)null);
+                    b.ToTable("EmailVerifications");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.Favorites", b =>
@@ -366,7 +369,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favorite", (string)null);
+                    b.ToTable("Favorite");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.RefreshToken", b =>
@@ -390,7 +393,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.ResidentIdentity", b =>
@@ -414,7 +417,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("residentIdentities", (string)null);
+                    b.ToTable("residentIdentities");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.Reviews", b =>
@@ -471,7 +474,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Review", (string)null);
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.Service", b =>
@@ -502,7 +505,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("doctorId");
 
-                    b.ToTable("Service", (string)null);
+                    b.ToTable("Service");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.ServiceDate", b =>
@@ -523,7 +526,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("serviceId");
 
-                    b.ToTable("ServiceDate", (string)null);
+                    b.ToTable("ServiceDate");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.ServiceDay", b =>
@@ -544,7 +547,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("serviceId");
 
-                    b.ToTable("ServiceDay", (string)null);
+                    b.ToTable("ServiceDay");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.TimeSlot", b =>
@@ -568,7 +571,7 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.HasIndex("serviceId");
 
-                    b.ToTable("TimeSlot", (string)null);
+                    b.ToTable("TimeSlot");
                 });
 
             modelBuilder.Entity("Wasla_Backend.Models.Doctor", b =>
@@ -834,7 +837,7 @@ namespace Wasla_Backend.Data.Migrations
 
                             b1.HasKey("ApplicationRoleId");
 
-                            b1.ToTable("AspNetRoles", (string)null);
+                            b1.ToTable("AspNetRoles");
 
                             b1.WithOwner()
                                 .HasForeignKey("ApplicationRoleId");
@@ -882,7 +885,7 @@ namespace Wasla_Backend.Data.Migrations
 
                             b1.HasKey("DoctorSpecializationId");
 
-                            b1.ToTable("DoctorSpecializations", (string)null);
+                            b1.ToTable("DoctorSpecializations");
 
                             b1.WithOwner()
                                 .HasForeignKey("DoctorSpecializationId");
@@ -955,7 +958,7 @@ namespace Wasla_Backend.Data.Migrations
 
                             b1.HasKey("Serviceid");
 
-                            b1.ToTable("Service", (string)null);
+                            b1.ToTable("Service");
 
                             b1.WithOwner()
                                 .HasForeignKey("Serviceid");
@@ -978,7 +981,7 @@ namespace Wasla_Backend.Data.Migrations
 
                             b1.HasKey("Serviceid");
 
-                            b1.ToTable("Service", (string)null);
+                            b1.ToTable("Service");
 
                             b1.WithOwner()
                                 .HasForeignKey("Serviceid");

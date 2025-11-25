@@ -31,17 +31,20 @@
             var doctorProfiles = await _doctorService.GetDoctorProfile(id, lan);
             return Ok(ResponseHelper.Success("FetchDoctorProfileSuccess", lan, doctorProfiles));
         }
-        [HttpGet("GetAllDoctors")]
-        public async Task<IActionResult> GetAllDoctors(string lan="en")
-        {
-            var doctors = await _doctorService.GetAllDoctors(lan);
-            return Ok(ResponseHelper.Success("FetchAllDoctorsSuccess", lan, doctors));
-        }
+   
         [HttpGet("GetDoctorBySpecialist/{specialistId}")]
-        public async Task<IActionResult> GetDoctorBySpecialist(int specialistId, string lan = "en")
+        public async Task<IActionResult> GetDoctorBySpecialist(int specialistId = 0, string lan = "en")
         {
-            var doctors = await _doctorService.GetDoctorBySpecialist(specialistId,lan);
-            return Ok(ResponseHelper.Success("FetchDoctorsBySpecialistSuccess", lan, doctors));
+            if (specialistId == 0)
+            {
+                var doctors = await _doctorService.GetAllDoctors(lan);
+                return Ok(ResponseHelper.Success("FetchAllDoctorsSuccess", lan, doctors));
+            }
+            else
+            {
+                var doctors = await _doctorService.GetDoctorBySpecialist(specialistId, lan);
+                return Ok(ResponseHelper.Success("FetchDoctorsBySpecialistSuccess", lan, doctors));
+            }
         }
     }
 }

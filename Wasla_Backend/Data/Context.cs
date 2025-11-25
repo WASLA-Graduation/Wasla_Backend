@@ -47,6 +47,9 @@ namespace Wasla_Backend.Data
              .WithMany() 
             .HasForeignKey(b => b.ServiceId)
            .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Booking>()
+           .HasIndex(b => b.ServiceId)
+           .IsUnique();
 
 
             builder.Entity<ApplicationRole>(entity =>
