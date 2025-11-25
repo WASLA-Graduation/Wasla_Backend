@@ -9,6 +9,7 @@
         private readonly IGenericRepository<TimeSlot> _timeSlotRepo;
         private readonly IUserRepository _userRepository;
         private readonly IBookingRepository _bookingRepository;
+        private readonly Context _context;
 
 
         public DoctorServiceService(IDoctorServiceRepository doctorServiceRepository
@@ -18,6 +19,7 @@
             , IGenericRepository<TimeSlot> timeSlotRepo
             , IUserRepository userRepository
             , IBookingRepository bookingRepository
+            , Context context
             )
         {
             _doctorServiceRepository = doctorServiceRepository;
@@ -27,6 +29,8 @@
             _timeSlotRepo = timeSlotRepo;
             _userRepository = userRepository;
             _bookingRepository = bookingRepository;
+            
+            _context = context;
         }
         public async Task AddServiceAsync(AddServiceDto addServiceDto)
         {
@@ -159,6 +163,8 @@
 
         public async Task Book(BookServiceDto bookServiceDto)
         {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             var service =await _doctorServiceRepository.GetByIdAsync(bookServiceDto.ServiceId);
             if (service == null)
             {
@@ -174,7 +180,7 @@
             {
                 throw new NotFoundException("ServiceProviderNotFound");
             }
-            if(service.isbooked)
+            if (service.isbooked)
             {
                 throw new BadRequestException("ServiceAlreadyBooked");
             }
@@ -190,14 +196,11 @@
             service.isbooked = true;
             _doctorServiceRepository.Update(service);
             await _bookingRepository.AddAsync(booking);
-            try
-            {
-                await _doctorServiceRepository.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw new BadRequestException("ServiceAlreadyBooked");
-            }
+           
+           await _doctorServiceRepository.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+
         }
     }
 }
