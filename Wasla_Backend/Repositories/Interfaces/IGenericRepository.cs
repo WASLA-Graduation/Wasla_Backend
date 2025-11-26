@@ -13,7 +13,5 @@ namespace Wasla_Backend.Repositories.Interfaces
         public void Update(T entity);
         public void Delete(T entity);
         public Task SaveChangesAsync();
-
-
     }
 }
