@@ -335,6 +335,11 @@
                 ["en"] = "Service booked successfully.",
                 ["ar"] = "تم حجز الخدمة بنجاح."
             },
+            ["BookingRetrievedsuccess"] = new()
+            {
+                ["en"] = "Booking details retrieved successfully.",
+                ["ar"] = "تم جلب تفاصيل الحجز بنجاح."
+            },
 
         };
 

@@ -12,11 +12,14 @@
         [ForeignKey("ServiceId")]
         public Service Service { get; set; }
         public string ServiceProviderId { get; set; }
+
         public double Price { get; set; }
         public ServiceProviderType ServiceProviderType { get; set; }
         public DateTime BookingDate { get; set; } = DateTime.Now;
         public BookingType BookingType { get; set; }
         public string TimeSlot { get; set; }
+        public string Day { get; set; }
+        public bool IsConfirmed { get; set; } = false;
 
         public string? ImagesJson { get; set; }
 

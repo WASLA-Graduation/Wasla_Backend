@@ -37,6 +37,7 @@ namespace Wasla_Backend
             builder.Services.AddScoped<IResidentService, ResidentService>();
             builder.Services.AddScoped<IDoctorServiceService, DoctorServiceService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<TokenHelper>();
 
             builder.Services.AddScoped<IUserFactory, UserFactory>();

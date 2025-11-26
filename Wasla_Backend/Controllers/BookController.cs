@@ -1,0 +1,23 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Wasla_Backend.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BookController : ControllerBase
+    {
+        private readonly IBookService _bookService;
+        public BookController(IBookService bookService)
+        {
+            _bookService = bookService;
+        }
+        [HttpGet("GetBookingDetailsForUser")]
+        public async Task<IActionResult> GetBookingDetailsForUser([FromQuery]string userId, [FromQuery] string language="en")
+        {
+            var bookingDetails = await _bookService.GetBookingDetailsForUserAsync(userId, language);
+            return Ok(ResponseHelper.Success("BookingRetrievedsuccess", language, bookingDetails));
+
+        }
+    }
+}

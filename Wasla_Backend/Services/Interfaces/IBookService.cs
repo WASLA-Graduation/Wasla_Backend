@@ -1,8 +1,9 @@
-﻿
-namespace Wasla_Backend.Repositories.Interfaces
+﻿namespace Wasla_Backend.Services.Interfaces
 {
-    public interface IBookingRepository : IGenericRepository<Booking>
+    public interface IBookService
     {
         public Task<List<ServiceBookingDetailsDto>> GetBookingDetailsForUserAsync(string userId, string language);
+
+
     }
 }

@@ -46,6 +46,7 @@ global using Wasla_Backend.DTOs.ResidentDTOS;
 global using Wasla_Backend.DTOs.RoleDTOS;
 global using Wasla_Backend.DTOs.ServiceDTOS;
 global using Wasla_Backend.DTOs.ReviewDtos;
+global using Wasla_Backend.DTOs.BookDTOS;
 
 
 

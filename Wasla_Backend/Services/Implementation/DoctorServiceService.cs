@@ -213,7 +213,7 @@ namespace Wasla_Backend.Services.Implementation
                 Price = bookServiceDto.Price,
                 ServiceProviderType = bookServiceDto.ServiceProviderType,
                 BookingDate = DateTime.Now,
-
+                Day = bookServiceDto.Day,
                 BookingType = bookServiceDto.BookingType,
                 TimeSlot = bookServiceDto.TimeSlot,
                 Images = savedImages

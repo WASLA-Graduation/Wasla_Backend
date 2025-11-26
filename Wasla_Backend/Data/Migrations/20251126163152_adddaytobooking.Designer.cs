@@ -12,8 +12,8 @@ using Wasla_Backend.Data;
 namespace Wasla_Backend.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251126151739_updatebooking")]
-    partial class updatebooking
+    [Migration("20251126163152_adddaytobooking")]
+    partial class adddaytobooking
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,6 +278,10 @@ namespace Wasla_Backend.Data.Migrations
 
                     b.Property<int>("BookingType")
                         .HasColumnType("int");
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagesJson")
                         .HasColumnType("nvarchar(max)");

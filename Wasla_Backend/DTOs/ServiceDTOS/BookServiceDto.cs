@@ -10,6 +10,7 @@
         public BookingType BookingType { get; set; }
 
         public string TimeSlot { get; set; }
+        public string Day { get; set; }
 
         public List<IFormFile>? Images { get; set; }
     }
