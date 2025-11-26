@@ -7,5 +7,10 @@
         public string ServiceProviderId { get; set; }
         public double Price { get; set; }
         public ServiceProviderType ServiceProviderType { get; set; }
+        public BookingType BookingType { get; set; }
+
+        public string TimeSlot { get; set; }
+
+        public List<IFormFile>? Images { get; set; }
     }
 }

@@ -15,5 +15,16 @@
         public double Price { get; set; }
         public ServiceProviderType ServiceProviderType { get; set; }
         public DateTime BookingDate { get; set; } = DateTime.Now;
+        public BookingType BookingType { get; set; }
+        public string TimeSlot { get; set; }
+
+        public string? ImagesJson { get; set; }
+
+        [NotMapped]
+        public List<string> Images
+        {
+            get => ImagesJson == null ? new List<string>() : JsonSerializer.Deserialize<List<string>>(ImagesJson);
+            set => ImagesJson = JsonSerializer.Serialize(value);
+        }
     }
 }

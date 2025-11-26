@@ -60,7 +60,7 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task<IEnumerable<AllDoctorDataDto>> GetAllDoctors(string lan)
         {
-           var doctors =await _doctorRepository.GetAllAsync();
+           var doctors =await _doctorRepository.GetAllSortedByRating();
           
             var allDoctorDataDtos = _mapper.Map<IEnumerable<AllDoctorDataDto>>(doctors);
             foreach (var doctor in allDoctorDataDtos)

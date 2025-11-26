@@ -11,6 +11,8 @@ namespace Wasla_Backend.Services.Implementation
         private readonly IGenericRepository<TimeSlot> _timeSlotRepo;
         private readonly IUserRepository _userRepository;
         private readonly IBookingRepository _bookingRepository;
+        private readonly string _imagePath;
+
 
 
         public DoctorServiceService(IDoctorServiceRepository doctorServiceRepository
@@ -19,7 +21,8 @@ namespace Wasla_Backend.Services.Implementation
             ,IGenericRepository<ServiceDay> serviceDayRepo
             , IGenericRepository<TimeSlot> timeSlotRepo
             , IUserRepository userRepository
-            , IBookingRepository bookingRepository
+            , IBookingRepository bookingRepository,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             _doctorServiceRepository = doctorServiceRepository;
@@ -29,6 +32,7 @@ namespace Wasla_Backend.Services.Implementation
             _timeSlotRepo = timeSlotRepo;
             _userRepository = userRepository;
             _bookingRepository = bookingRepository;
+            _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathBooking.TrimStart('/'));
         }
         public async Task AddServiceAsync(ServiceDto addServiceDto)
         {
@@ -191,6 +195,16 @@ namespace Wasla_Backend.Services.Implementation
                 throw new BadRequestException("ServiceAlreadyBooked");
 
 
+            List<string> savedImages = new();
+            if (bookServiceDto.Images != null)
+            {
+                foreach (var img in bookServiceDto.Images)
+                {
+                    var filePath = await FileOperation.SaveFile(img, _imagePath);
+                    savedImages.Add(filePath);
+                }
+            }
+
             var booking = new Booking
             {
                 UserId = bookServiceDto.UserId,
@@ -198,7 +212,11 @@ namespace Wasla_Backend.Services.Implementation
                 ServiceProviderId = bookServiceDto.ServiceProviderId,
                 Price = bookServiceDto.Price,
                 ServiceProviderType = bookServiceDto.ServiceProviderType,
-                BookingDate = DateTime.Now
+                BookingDate = DateTime.Now,
+
+                BookingType = bookServiceDto.BookingType,
+                TimeSlot = bookServiceDto.TimeSlot,
+                Images = savedImages
             };
             if (serviceProvider is Doctor doctor)
             {
