@@ -115,7 +115,7 @@
         {
             var user = await _userRepository.GetUserByEmailAsync(model.Email);
             if (user == null)
-                throw new NotFoundException("EmailNotFound");
+                throw new NotFoundException("UserNotFound");
 
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
@@ -159,12 +159,14 @@
             if (existingUser != null)
                 throw new BadRequestException("EmailExists");
 
-            var user = _userFactory.CreateUser(model.Role);
+            var role = await _roleRepository.GetRoleByIdAsync(model.roleId);
+            if (role == null)
+                throw new NotFoundException("RoleNotFound");
+
+            var user = _userFactory.CreateUser(role.Name);
             _mapper.Map(model, user);
 
-            var roles = await _roleRepository.GetRolesNameAsync();
-            if (!roles.Contains(model.Role))
-                throw new NotFoundException("RoleNotFound");
+
 
             var result = await _userRepository.CreateUserAsync(user, model.Password);
             if (!result.Succeeded)
@@ -173,7 +175,7 @@
             string verificationCode = new Random().Next(1000, 9999).ToString();
             await _emailSender.SendEmailAsync(model.Email, "Verification Code", $"Your OTP is: <b>{verificationCode}</b>");
             await _emailVerificationRepository.AddVerificationAsync(model.Email, verificationCode, TimeSpan.FromMinutes(1));
-            await _roleRepository.AddUserToRoleAsync(user, model.Role);
+            await _roleRepository.AddUserToRoleAsync(user, role.Name);
 
             return result;
         }

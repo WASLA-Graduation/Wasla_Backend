@@ -11,7 +11,7 @@
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = default!;
 
-        public string Role { get; set; } = default!;
+        public string roleId { get; set; } = default!;
     }
 
 }
