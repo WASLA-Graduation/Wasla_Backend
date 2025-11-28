@@ -8,6 +8,7 @@
         public int SpecializationId { get; set; }
         public int ExperienceYears { get; set; }
         public string UniversityName { get; set; }
+        public string hospitalName { get; set; }
         public double GraduationYear { get; set; }
         public string BirthDay { get; set; }
         public string Phone { get; set; }

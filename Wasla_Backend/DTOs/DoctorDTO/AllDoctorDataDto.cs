@@ -2,21 +2,21 @@
 {
     public class AllDoctorDataDto
     {
-        public string Id { get; set; }
-        public string FullName { get; set; }
-        public string Specialization { get; set; }
-        public int ExperienceYears { get; set; }
-        public float Rating { get; set; }
-        public string UniversityName { get; set; }
-        public double GraduationYear { get; set; }
-        public string hospitalname { get; set; }
-        public int NumberOfPatient { get; set; }
-       public string BirthDay { get; set; }
-        public string Phone { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        public string CVUrl { get; set; }
+        public string id { get; set; }
+        public string fullName { get; set; }
+        public string specialization { get; set; }
+        public int experienceYears { get; set; }
+        public float rating { get; set; }
+        public string universityName { get; set; }
+        public double graduationYear { get; set; }
+        public string hospitalName { get; set; }
+        public int numberOfPatient { get; set; }
+       public string birthDay { get; set; }
+        public string phone { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public string description { get; set; }
+        public string imageName { get; set; }
+        public string cv { get; set; }
     }
 }
