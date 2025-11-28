@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public string FullName { get; set; }
-        public string Specialization { get; set; }
+        public string specialtyName { get; set; }
         public int ExperienceYears { get; set; }
         public float Rating { get; set; }
         public string UniversityName { get; set; }
