@@ -70,6 +70,10 @@
                     sa.WithOwner();
                 });
             });
+
+           builder.Entity<Booking>()
+           .HasIndex(b => b.serviceDayId)
+           .IsUnique();
         }
     }
 }

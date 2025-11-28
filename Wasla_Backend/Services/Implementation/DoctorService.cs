@@ -8,6 +8,7 @@ namespace Wasla_Backend.Services.Implementation
         private readonly IDoctorRepository _doctorRepository;
         private readonly IMapper _mapper;
         private readonly IGenericRepository<DoctorSpecialization> _doctorSpecializationRepository;
+        private readonly IBookingRepository _bookingRepository;
         private readonly string _imagePath;
         private readonly string _cvPath;
 
@@ -16,11 +17,14 @@ namespace Wasla_Backend.Services.Implementation
             IWebHostEnvironment webHostEnvironment, 
             IMapper mapper, 
             IStringLocalizer<DoctorService> localizer,
-            IGenericRepository<DoctorSpecialization> doctorSpecializationRepository)
+            IGenericRepository<DoctorSpecialization> doctorSpecializationRepository
+            , IBookingRepository bookingRepository
+            )
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
             _doctorSpecializationRepository = doctorSpecializationRepository;
+            _bookingRepository = bookingRepository;
             _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathUser.TrimStart('/'));
             _cvPath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.PathCVDoctor.TrimStart('/'));
         }
@@ -92,6 +96,7 @@ namespace Wasla_Backend.Services.Implementation
             {
                 opt.Items["lan"] = lan;
             });
+
 
             return doctorProfileResponses;
         }

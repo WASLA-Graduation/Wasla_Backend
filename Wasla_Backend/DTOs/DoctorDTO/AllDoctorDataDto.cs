@@ -10,7 +10,7 @@
         public string UniversityName { get; set; }
         public double GraduationYear { get; set; }
         public string hospitalname { get; set; }
-        public int NumberOfPatient { get; set; }
+        public int numberOfpatients { get; set; }
        public string BirthDay { get; set; }
         public string Phone { get; set; }
         public double Latitude { get; set; }
