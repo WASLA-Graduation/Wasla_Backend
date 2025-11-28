@@ -11,6 +11,14 @@ namespace Wasla_Backend.Repositories.Implementation
             _userManager = userManager;
         }
 
+        public async Task<IEnumerable<Doctor>> GetAllSortedByRating()
+        {
+            return await _context.Doctors
+                .AsNoTracking()
+                .OrderByDescending(d => d.Rating)
+                .ToListAsync();
+        }
+
         public async Task<Doctor> GetByEmail(string email)
         {
             return await _userManager.Users
@@ -24,5 +32,27 @@ namespace Wasla_Backend.Repositories.Implementation
                 .Include(d => d.Specialization)
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
+
+        public async Task<IEnumerable<Doctor>> GetBySpecialist(int specialistId)
+        {
+            return await _context.Doctors
+                .AsNoTracking()
+                .Where(d => d.SpecializationId == specialistId)
+                .OrderByDescending(d=>d.Rating)
+                .ToListAsync();
+        }
+
+        public async Task<string?> GetDoctorSpecializationName(string doctorId, string language)
+        {
+            var specialization = await _context.Doctors
+                .AsNoTracking()
+                .Where(d => d.Id == doctorId)
+                .Select(d => d.Specialization!.Specialization)
+                .FirstOrDefaultAsync();
+
+            return specialization?.GetText(language);
+        }
+
+
     }
 }

@@ -264,7 +264,122 @@
             {
                 ["en"] = "Doctor profile fetched successfully.",
                 ["ar"] = "تم جلب ملف الطبيب بنجاح."
-            }
+            },
+            ["FetchDoctorProfileSuccess"] = new()
+            {
+                ["en"] = "Doctor profile fetched successfully.",
+                ["ar"] = "تم جلب ملف الطبيب بنجاح."
+            },
+            ["ServiceAddedSuccessfully"] = new()
+            {
+                ["en"] = "Service added successfully.",
+                ["ar"] = "تمت إضافة الخدمة بنجاح."
+            },
+            ["ServiceNotFound"] = new()
+            {
+                ["en"] = "Service not found.",
+                ["ar"] = "الخدمة غير موجودة."
+            },
+            ["FetchServicesSuccess"] = new()
+            {
+                ["en"] = "Services fetched successfully.",
+                ["ar"] = "تم جلب الخدمات بنجاح."
+            },
+            ["ServiceUpdatedSuccessfully"] = new()
+            {
+                ["en"] = "Service updated successfully.",
+                ["ar"] = "تم تحديث الخدمة بنجاح."
+            },
+            ["ServiceDeletedSuccessfully"] = new()
+            {
+                ["en"] = "Service deleted successfully.",
+                ["ar"] = "تم حذف الخدمة بنجاح."
+            },
+            ["FetchAllDoctorsSuccess"] = new()
+            {
+                ["en"] = "All doctors fetched successfully.",
+                ["ar"] = "تم جلب جميع الأطباء بنجاح."
+            },
+            ["FetchDoctorsBySpecialistSuccess"] = new()
+            {
+                ["en"] = "Doctors fetched by specialist successfully.",
+                ["ar"] = "تم جلب الأطباء حسب التخصص بنجاح."
+            },
+            ["GetReviewsSuccess"] = new()
+            {
+                ["en"] = "Reviews fetched successfully.",
+                ["ar"] = "تم جلب التقييمات بنجاح."
+            },
+            ["ServiceNotFound"] = new()
+            {
+                ["en"] = "Service not found.",
+                ["ar"] = "الخدمة غير موجودة."
+            },
+            ["ServiceProviderNotFound"] = new()
+            {
+                ["en"] = "Service provider not found.",
+                ["ar"] = "مزود الخدمة غير موجود."
+            },
+            ["ServiceAlreadyBooked"] = new()
+            {
+                ["en"] = "Service is already booked.",
+                ["ar"] = "الخدمة محجوزة بالفعل."
+            },
+            ["BookingSuccess"] = new()
+            {
+                ["en"] = "Service booked successfully.",
+                ["ar"] = "تم حجز الخدمة بنجاح."
+            },
+            ["ServiceBookedSuccessfully"] = new()
+            {
+                ["en"] = "Service booked successfully.",
+                ["ar"] = "تم حجز الخدمة بنجاح."
+            },
+            ["BookingRetrievedsuccess"] = new()
+            {
+                ["en"] = "Booking details retrieved successfully.",
+                ["ar"] = "تم جلب تفاصيل الحجز بنجاح."
+            },
+            ["TimeSlotNotFound"] = new()
+            {
+                ["en"] = "The selected time slot was not found.",
+                ["ar"] = "لم يتم العثور على الوقت المحدد."
+            },
+            ["BookingNotFound"]=new()
+            {
+                ["en"] = "Booking not found.",
+                ["ar"] = "لم يتم العثور على الحجز."
+            },
+            ["ServiceDayNotFound"]= new()
+            {
+                ["en"] = "Service day not found.",
+                ["ar"] = "لم يتم العثور على يوم الخدمة."
+            },
+            ["BookingConfirmedSuccessfully"] = new()
+            {
+                ["en"] = "Booking confirmed successfully.",
+                ["ar"] = "تم تأكيد الحجز بنجاح."
+            },
+            ["DoctorNotFound"]=new()
+            {
+                ["en"] = "Doctor not found.",
+                ["ar"] = "لم يتم العثور على الطبيب."
+            },
+            ["RoleIdRequired"]=new()
+            {
+                ["en"] = "Role ID is required.",
+                ["ar"] = "معرف الدور مطلوب."
+            },
+            ["RoleDeletionFailed"]=new()
+            {
+                ["en"] = "Failed to delete the role.",
+                ["ar"] = "فشل في حذف الدور."
+            },
+            ["RoleDeletedSuccessfully"] = new()
+            {
+                ["en"] = "Role deleted successfully.",
+                ["ar"] = "تم حذف الدور بنجاح."
+            },
         };
 
         public static string GetLocalizedMessage(string key, string lan)

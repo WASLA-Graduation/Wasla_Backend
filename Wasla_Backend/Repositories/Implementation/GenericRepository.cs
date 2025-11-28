@@ -1,39 +1,53 @@
-﻿namespace Wasla_Backend.Repositories.Implementation
+﻿using System.Linq.Expressions;
+
+namespace Wasla_Backend.Repositories.Implementation
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected Context _context;
-        protected DbSet<T> _dbSet;
+        protected readonly Context _context;
+        protected readonly DbSet<T> _dbSet;
+
         public GenericRepository(Context context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
+
+        public async Task AddAsync(T entity)
+            => await _dbSet.AddAsync(entity);
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+        }
 
         public void Delete(T entity)
+            => _dbSet.Remove(entity);
+
+        public void RemoveRange(IEnumerable<T> entities)
         {
-            _dbSet.Remove(entity);
+            if (entities == null)
+                return;
+            
+            _dbSet.RemoveRange(entities);
+        }
+        public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
+            => await _dbSet.ToListAsync();
+
+        public async Task<T> GetByIdAsync(int id)
+            => await _dbSet.FindAsync(id);
 
         public async Task<T> GetByIdAsync(string id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+            => await _dbSet.FindAsync(id);
 
         public void Update(T entity)
-        {
-            _dbSet.Update(entity);
-        }
+            => _dbSet.Update(entity);
+
+        public async Task SaveChangesAsync()
+            => await _context.SaveChangesAsync();
     }
 }

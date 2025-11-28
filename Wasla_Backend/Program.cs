@@ -25,13 +25,19 @@ namespace Wasla_Backend
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IResidentRepository, ResidentRepository>();
-            builder.Services.AddScoped<IResidentIdentityRepository, ResidentIdentityRepository>(); 
+            builder.Services.AddScoped<IResidentIdentityRepository, ResidentIdentityRepository>();
+            builder.Services.AddScoped<IDoctorServiceRepository, DoctorServiceRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped < IBookingRepository, BookingRepository > ();
             builder.Services.AddTransient<EmailSenderHelper>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IResidentService, ResidentService>();
+            builder.Services.AddScoped<IDoctorServiceService, DoctorServiceService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<TokenHelper>();
 
             builder.Services.AddScoped<IUserFactory, UserFactory>();
@@ -90,10 +96,16 @@ namespace Wasla_Backend
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseCors("AllowAll");
 
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                c.RoutePrefix = string.Empty; 
+            });
 
             app.UseMiddleware<ExceptionMiddleware>();
 

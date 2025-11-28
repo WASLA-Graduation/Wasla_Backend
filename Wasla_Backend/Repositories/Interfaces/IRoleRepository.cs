@@ -9,5 +9,7 @@
         public Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string roleName);
         public Task<IList<string>> GetUserRolesAsync(ApplicationUser user);
         public Task<IList<ApplicationRole>> GetAllRolesAsync();
+        public Task<ApplicationRole> GetRoleByIdAsync(string roleId);
+        public Task<IdentityResult> DeleteRoleAsync(ApplicationRole role);
     }
 }
