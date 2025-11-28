@@ -2,28 +2,28 @@
 
 #nullable disable
 
-namespace Wasla_Backend.Data.Migrations
+namespace Wasla_Backend.data
 {
     /// <inheritdoc />
-    public partial class RemoveTotalReviewsFromDoctor : Migration
+    public partial class updateBooking : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "TotalReviews",
-                table: "Doctor");
+                name: "timeSlotId",
+                table: "Booking");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "TotalReviews",
-                table: "Doctor",
+                name: "timeSlotId",
+                table: "Booking",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
         }
-
     }
 }

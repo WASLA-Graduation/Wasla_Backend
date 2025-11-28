@@ -10,30 +10,31 @@ namespace Wasla_Backend.Repositories.Implementation
         public async Task<List<ServiceBookingDetailsDto>> GetBookingDetailsForUserAsync(string userId, string language)
         {
             var bookingDetails = await _context.Booking
-                .Where(b => b.UserId == userId)
-                .Include(b => b.Service)
-                .Join(
-                    _context.Users,
-                    booking => booking.ServiceProviderId,
-                    user => user.Id,
-                    (booking, serviceProvider) => new { booking, serviceProvider }
-                )
-                .Select(joined => new ServiceBookingDetailsDto
+                .Where(b => b.userId == userId)
+                .Include(b => b.serviceDay)
+                    .ThenInclude(sd => sd.service)
+                        .ThenInclude(s => s.doctor)
+                .Select(b => new ServiceBookingDetailsDto
                 {
-                    TimeSlot = joined.booking.TimeSlot,
-                    Day = joined.booking.Day,
-                    Price = joined.booking.Price,
-                    IsConfirmed = joined.booking.IsConfirmed,
+                    id = b.Id,
+                    start = b.serviceDay.start,
+                    end = b.serviceDay.end,
+                    day = b.serviceDay.dayOfWeek.ToString(),
+                    date = b.bookingDate.ToString(),
 
-                    ServiceProviderName = joined.serviceProvider.FullName,
-                    ServiceProviderProfilePhoto = joined.serviceProvider.ProfilePhoto ?? string.Empty,
-                    ServiceName = language.ToLower() == "ar" ?
-                                  joined.booking.Service.serviceName.Arabic :
-                                  joined.booking.Service.serviceName.English
+                    ServiceProviderName = b.serviceDay.service.doctor.FullName,
+                    ServiceProviderProfilePhoto = b.serviceDay.service.doctor.ProfilePhoto,
+
+                    ServiceName = language.ToLower() == "ar"
+                        ? b.serviceDay.service.serviceName.Arabic
+                        : b.serviceDay.service.serviceName.English,
+
+                    Price = b.price
                 })
                 .ToListAsync();
 
             return bookingDetails;
         }
+
     }
 }

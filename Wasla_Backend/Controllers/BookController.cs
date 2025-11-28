@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Wasla_Backend.Controllers
+﻿namespace Wasla_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -12,12 +9,19 @@ namespace Wasla_Backend.Controllers
         {
             _bookService = bookService;
         }
+
+        [HttpPost("BookService")]
+        public async Task<IActionResult> BookService([FromForm] BookServiceDto bookServiceDto, string lan = "en")
+        {
+                await _bookService.Book(bookServiceDto);
+                return Ok(ResponseHelper.Success("ServiceBookedSuccessfully", lan));
+        }
+
         [HttpGet("GetBookingDetailsForUser")]
         public async Task<IActionResult> GetBookingDetailsForUser([FromQuery]string userId, [FromQuery] string language="en")
         {
             var bookingDetails = await _bookService.GetBookingDetailsForUserAsync(userId, language);
             return Ok(ResponseHelper.Success("BookingRetrievedsuccess", language, bookingDetails));
-
         }
     }
 }

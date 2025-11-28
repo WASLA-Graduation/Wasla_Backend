@@ -7,6 +7,7 @@ global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.Extensions.Localization;
 
+
 global using System.Text.RegularExpressions;
 global using System.Reflection;
 global using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,8 @@ global using MailKit.Security;
 global using MimeKit;
 global using MimeKit.Text;
 global using AutoMapper;
+global using System.Data;
+
 
 global using Wasla_Backend.Repositories.Interfaces;
 global using Wasla_Backend.Enums;

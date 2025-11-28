@@ -9,7 +9,5 @@
         public string descriptionEnglish { get; set; }
         public decimal price { get; set; }
         public List<ServiceDayResponse> serviceDays { get; set; }
-        public List<ServiceDateResponse> serviceDates { get; set; }
-        public List<TimeSoltsResponse> timeSlots { get; set; }
     }
 }

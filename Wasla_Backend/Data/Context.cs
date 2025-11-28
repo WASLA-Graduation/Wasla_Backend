@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Wasla_Backend.Data
+﻿namespace Wasla_Backend.Data
 {
     public class Context : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -14,8 +12,6 @@ namespace Wasla_Backend.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ResidentIdentity> residentIdentities { get; set; }
         public DbSet<Service> Service { get; set; }
-        public DbSet<TimeSlot> TimeSlot { get; set; }
-        public DbSet<ServiceDate> ServiceDate { get; set; }
         public DbSet<ServiceDay> ServiceDay { get; set; }
         public DbSet<Favorites> Favorite { get; set; }
         public DbSet<Reviews> Review { get; set; }
@@ -43,14 +39,10 @@ namespace Wasla_Backend.Data
                 });
             });
             builder.Entity<Booking>()
-            .HasOne(b => b.Service)
-             .WithMany() 
-            .HasForeignKey(b => b.ServiceId)
-           .OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Booking>()
-           .HasIndex(b => b.ServiceId)
-           .IsUnique();
-
+                .HasOne(b => b.serviceDay)
+                .WithMany()
+                .HasForeignKey(b => b.serviceDayId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ApplicationRole>(entity =>
             {

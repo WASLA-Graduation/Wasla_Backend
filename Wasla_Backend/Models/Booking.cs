@@ -3,31 +3,29 @@
     public class Booking
     {
         public int Id { get; set; }
-        public String UserId { get; set; }
+        public string userId { get; set; }
 
-        [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
-        public int ServiceId { get; set; }
+        [ForeignKey("userId")]
+        public ApplicationUser user { get; set; }
+        public int serviceDayId { get; set; }
 
-        [ForeignKey("ServiceId")]
-        public Service Service { get; set; }
-        public string ServiceProviderId { get; set; }
-
-        public double Price { get; set; }
-        public ServiceProviderType ServiceProviderType { get; set; }
-        public DateTime BookingDate { get; set; } = DateTime.Now;
-        public BookingType BookingType { get; set; }
-        public string TimeSlot { get; set; }
-        public string Day { get; set; }
-        public bool IsConfirmed { get; set; } = false;
-
-        public string? ImagesJson { get; set; }
+        [ForeignKey("serviceDayId")]
+        public ServiceDay serviceDay { get; set; }
+        public string serviceProviderId { get; set; }
+        public double price { get; set; }
+        public ServiceProviderType serviceProviderType { get; set; }
+        public DateOnly bookingDate { get; set; }
+        public string start { get; set; }
+        public string end { get; set; }
+        public int day { get; set; }
+        public BookingType bookingType { get; set; }
+        public string? imagesJson { get; set; }
 
         [NotMapped]
-        public List<string> Images
+        public List<string> images
         {
-            get => ImagesJson == null ? new List<string>() : JsonSerializer.Deserialize<List<string>>(ImagesJson);
-            set => ImagesJson = JsonSerializer.Serialize(value);
+            get => imagesJson == null ? new List<string>() : JsonSerializer.Deserialize<List<string>>(imagesJson);
+            set => imagesJson = JsonSerializer.Serialize(value);
         }
     }
 }

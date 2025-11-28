@@ -1,9 +1,0 @@
-﻿namespace Wasla_Backend.DTOs.ServiceDTOS
-{
-    public class TimeSoltsResponse
-    {
-        public int id { get; set; }
-        public string start { get; set; }
-        public string end { get; set; }
-    }
-}

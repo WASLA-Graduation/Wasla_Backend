@@ -1,137 +1,101 @@
-﻿using System.Data;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class DoctorServiceService : IDoctorServiceService
     {
         private readonly IDoctorServiceRepository _doctorServiceRepository;
         private readonly IDoctorRepository _doctorRepository;
-        private readonly IGenericRepository<ServiceDate> _serviceDateRepo;
         private readonly IGenericRepository<ServiceDay> _serviceDayRepo;
-        private readonly IGenericRepository<TimeSlot> _timeSlotRepo;
-        private readonly IUserRepository _userRepository;
-        private readonly IBookingRepository _bookingRepository;
-        private readonly string _imagePath;
-
-
 
         public DoctorServiceService(IDoctorServiceRepository doctorServiceRepository
             ,IDoctorRepository doctorRepository
-            ,IGenericRepository<ServiceDate> serviceDateRepo
             ,IGenericRepository<ServiceDay> serviceDayRepo
-            , IGenericRepository<TimeSlot> timeSlotRepo
-            , IUserRepository userRepository
-            , IBookingRepository bookingRepository,
-            IWebHostEnvironment webHostEnvironment
             )
         {
             _doctorServiceRepository = doctorServiceRepository;
             _doctorRepository = doctorRepository;
-            _serviceDateRepo = serviceDateRepo;
             _serviceDayRepo = serviceDayRepo;
-            _timeSlotRepo = timeSlotRepo;
-            _userRepository = userRepository;
-            _bookingRepository = bookingRepository;
-            _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathBooking.TrimStart('/'));
+        
         }
-        public async Task AddServiceAsync(ServiceDto addServiceDto)
+        public async Task AddServiceAsync(ServiceDto dto)
         {
-            var doctor = await _doctorRepository.GetByIdAsync(addServiceDto.doctorId);
-            
+            var doctor = await _doctorRepository.GetByIdAsync(dto.doctorId);
             if (doctor == null)
-            {
                 throw new NotFoundException("DoctorNotFound");
-            }
 
-            var doctorService = new Service
+            var service = new Service
             {
-                doctorId = addServiceDto.doctorId,
-                serviceName = addServiceDto.serviceName,
-                description = addServiceDto.description,
-                price = addServiceDto.price,
-                ServiceDays = addServiceDto.serviceDays.Select(dayDto => new ServiceDay
-                {
-                    dayOfWeek = dayDto.dayOfWeek,
-                }).ToList(),
-                ServiceDates = addServiceDto.serviceDates.Select(dateDto => new ServiceDate
-                {
-                    date = dateDto.date,
-                }).ToList(),
-                TimeSlots = addServiceDto.timeSlots.Select(slotDto => new TimeSlot
-                {
-                    start = slotDto.start,
-                    end = slotDto.end,
-                }).ToList()
+                doctorId = dto.doctorId,
+                serviceName = dto.serviceName,
+                description = dto.description,
+                price = dto.price
             };
-            await _doctorServiceRepository.AddAsync(doctorService);
-            await _doctorServiceRepository.SaveChangesAsync();
-        }
-        public async Task UpdateServiceAsync(UpdateServiceDto updateServiceDto)
-        {
-            var service = await _doctorServiceRepository.GetByIdAsync(updateServiceDto.serviceId);
 
+            await _doctorServiceRepository.AddAsync(service);
+            await _doctorServiceRepository.SaveChangesAsync();
+
+            if (dto.serviceDays != null && dto.timeSlots != null)
+            {
+                var serviceDays = dto.serviceDays
+                    .SelectMany(day => dto.timeSlots.Select(slot => new ServiceDay
+                    {
+                        serviceId = service.id,
+                        dayOfWeek = day.dayOfWeek,
+                        start = slot.start,
+                        end = slot.end
+                    }))
+                    .ToList();
+
+                await _serviceDayRepo.AddRangeAsync(serviceDays);
+                await _serviceDayRepo.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateServiceAsync(UpdateServiceDto dto)
+        {
+            var service = await _doctorServiceRepository.GetByIdAsync(dto.serviceId);
             if (service == null)
                 throw new NotFoundException("ServiceNotFound");
 
-            service.serviceName = updateServiceDto.serviceName;
-            service.description = updateServiceDto.description;
-            service.price = updateServiceDto.price;
+            service.serviceName = dto.serviceName;
+            service.description = dto.description;
+            service.price = dto.price;
 
-            if (updateServiceDto.serviceDays != null)
+            var oldDays = await _serviceDayRepo.FindAsync(x => x.serviceId == service.id);
+            if (oldDays.Any())
             {
-                var oldDays = await _serviceDayRepo.FindAsync(sd => sd.serviceId == service.id);
                 _serviceDayRepo.RemoveRange(oldDays);
                 await _serviceDayRepo.SaveChangesAsync();
-
-                service.ServiceDays = updateServiceDto.serviceDays
-                    .Select(d => new ServiceDay
-                    {
-                        dayOfWeek = d.dayOfWeek,
-                        serviceId = service.id
-                    })
-                    .ToList();
             }
 
-            if (updateServiceDto.serviceDates != null)
+            if (dto.serviceDays != null && dto.timeSlots != null)
             {
-                var oldDates = await _serviceDateRepo.FindAsync(sd => sd.serviceId == service.id);
-                _serviceDateRepo.RemoveRange(oldDates);
-                await _serviceDateRepo.SaveChangesAsync();
-
-                service.ServiceDates = updateServiceDto.serviceDates
-                    .Select(d => new ServiceDate
+                var newDays = dto.serviceDays
+                    .SelectMany(day => dto.timeSlots.Select(slot => new ServiceDay
                     {
-                        date = d.date,
-                        serviceId = service.id
-                    })
+                        serviceId = service.id,
+                        dayOfWeek = day.dayOfWeek,
+                        start = slot.start,
+                        end = slot.end
+                    }))
                     .ToList();
+
+                await _serviceDayRepo.AddRangeAsync(newDays);
+                await _serviceDayRepo.SaveChangesAsync();
+
+                service.ServiceDays = newDays;
             }
-
-            var oldSlots = await _timeSlotRepo.FindAsync(t => t.serviceId == service.id);
-            _timeSlotRepo.RemoveRange(oldSlots);
-            await _timeSlotRepo.SaveChangesAsync();
-
-            service.TimeSlots = updateServiceDto.timeSlots
-                .Select(t => new TimeSlot
-                {
-                    start = t.start,
-                    end = t.end,
-                    serviceId = service.id
-                })
-                .ToList();
 
             _doctorServiceRepository.Update(service);
             await _doctorServiceRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ServiceResponse>> GetServices(string docotorId,string lan)
+        public async Task<IEnumerable<ServiceResponse>> GetServices(string doctorId, string lan)
         {
-            var doctor = await _doctorRepository.GetByIdAsync(docotorId);
-
+            var doctor = await _doctorRepository.GetByIdAsync(doctorId);
             if (doctor == null)
                 throw new NotFoundException("DoctorNotFound");
-            
-            var services = await _doctorServiceRepository.GetAllServicesAsync(docotorId);
+
+            var services = await _doctorServiceRepository.GetAllServicesAsync(doctorId);
 
             return services.Select(service => new ServiceResponse
             {
@@ -141,29 +105,18 @@ namespace Wasla_Backend.Services.Implementation
                 descriptionArabic = service.description.Arabic,
                 descriptionEnglish = service.description.English,
                 price = service.price,
-                serviceDays = service.ServiceDays?
-                .Select(day => new ServiceDayResponse
+
+                serviceDays = service.ServiceDays.Select(day => new ServiceDayResponse
                 {
                     id = day.id,
                     dayOfWeek = day.dayOfWeek,
-                })
-                .ToList() ?? new List<ServiceDayResponse>(),
-                serviceDates = service.ServiceDates?
-                .Select(date => new ServiceDateResponse
-                {
-                    id = date.id,
-                    date = date.date,
-                })
-                .ToList() ?? new List<ServiceDateResponse>(),
-                timeSlots = service.TimeSlots.Select(slot => new TimeSoltsResponse
-                {
-                    id = slot.id,
-                    start = slot.start,
-                    end = slot.end,
-                }).ToList()
+                    start = day.start,
+                    end = day.end,
+                    isBooking = day.isBooking
+                }).ToList(),
             });
-        
         }
+
         public async Task DeleteServiceAsync(int serviceId)
         {
             var service =  await _doctorServiceRepository.GetByIdAsync(serviceId);
@@ -177,69 +130,6 @@ namespace Wasla_Backend.Services.Implementation
             await _doctorServiceRepository.SaveChangesAsync();
         }
 
-        public async Task Book(BookServiceDto bookServiceDto)
-        {
-            var service = await _doctorServiceRepository.GetByIdAsync(bookServiceDto.ServiceId);
-            if (service == null)
-                throw new NotFoundException("ServiceNotFound");
-
-            var user = await _userRepository.GetUserByIdAsync(bookServiceDto.UserId);
-            if (user == null)
-                throw new NotFoundException("UserNotFound");
-
-            var serviceProvider = await _userRepository.GetUserByIdAsync(bookServiceDto.ServiceProviderId);
-            if (serviceProvider == null)
-                throw new NotFoundException("ServiceProviderNotFound");
-
-            if (service.isbooked)
-                throw new BadRequestException("ServiceAlreadyBooked");
-
-
-            List<string> savedImages = new();
-            if (bookServiceDto.Images != null)
-            {
-                foreach (var img in bookServiceDto.Images)
-                {
-                    var filePath = await FileOperation.SaveFile(img, _imagePath);
-                    savedImages.Add(filePath);
-                }
-            }
-
-            var booking = new Booking
-            {
-                UserId = bookServiceDto.UserId,
-                ServiceId = bookServiceDto.ServiceId,
-                ServiceProviderId = bookServiceDto.ServiceProviderId,
-                Price = bookServiceDto.Price,
-                ServiceProviderType = bookServiceDto.ServiceProviderType,
-                BookingDate = DateTime.Now,
-                Day = bookServiceDto.Day,
-                BookingType = bookServiceDto.BookingType,
-                TimeSlot = bookServiceDto.TimeSlot,
-                Images = savedImages
-            };
-            if (serviceProvider is Doctor doctor)
-            {
-                doctor.NumberOfPatient += 1;
-                _doctorRepository.Update(doctor);
-            }
-
-            service.isbooked = true;
-            _doctorServiceRepository.Update(service);
-            await _bookingRepository.AddAsync(booking);
-
-            try
-            {
-                await _doctorServiceRepository.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                if (ex.InnerException?.Message.Contains("IX_Booking_ServiceId") == true)
-                    throw new BadRequestException("ServiceAlreadyBooked");
-
-                throw;
-            }
-        }
-
+       
     }
 }

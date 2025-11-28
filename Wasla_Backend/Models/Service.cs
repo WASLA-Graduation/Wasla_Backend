@@ -7,11 +7,6 @@
         public MultilingualText? description { get; set; }
         public decimal price { get; set; }
         public ICollection<ServiceDay>? ServiceDays { get; set; }
-        public ICollection<ServiceDate>? ServiceDates { get; set; }
-        public ICollection<TimeSlot> TimeSlots { get; set; }
-        public bool isbooked { get; set; }= false;
-        [Timestamp]
-        public byte[] rowversion { get; set; }
         public Doctor doctor { get; set; }
 
         [ForeignKey("doctor")]
