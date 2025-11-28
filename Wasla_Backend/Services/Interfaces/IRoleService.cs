@@ -7,5 +7,6 @@ namespace Wasla_Backend.Services.Interfaces
         Task<IdentityResult> AddRoleAsync(AddRoleDto role);
         Task<IList<string>> GetUserRolesAsync(string userId);
         public Task<IList<RolesResponse>> GetAllRolesAsync(string lan);
+        public Task<IdentityResult> DeleteRole(string roleId);
     }
 }

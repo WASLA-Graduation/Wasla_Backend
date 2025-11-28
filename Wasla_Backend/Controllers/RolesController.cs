@@ -51,6 +51,16 @@ namespace Wasla_Backend.Controllers
 
             return Ok(ResponseHelper.Success("AllRolesRetrieved", lan, roles));
         }
+        [HttpDelete("{roleId}")]
+        public async Task<IActionResult> DeleteRole(string roleId, string lan = "en")
+        {
+            if (string.IsNullOrEmpty(roleId))
+                return BadRequest(ResponseHelper.Fail("RoleIdRequired", lan));
+            var result = await _roleService.DeleteRole(roleId);
+            if (!result.Succeeded)
+                return BadRequest(ResponseHelper.Fail("RoleDeletionFailed", lan, result.Errors));
+            return Ok(ResponseHelper.Success("RoleDeletedSuccessfully", lan));
+        }
     }
 }
 

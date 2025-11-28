@@ -29,6 +29,16 @@
         public async Task<IList<ApplicationRole>> GetAllRolesAsync()
             => await _roleManager.Roles.ToListAsync();
 
+        public async Task<ApplicationRole> GetRoleByIdAsync(string roleId)
+        {
+            return await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
+        }
+
+        public async Task<IdentityResult> DeleteRoleAsync(ApplicationRole role)
+        {
+          var result= await _roleManager.DeleteAsync(role);
+            return result;
+        }
     }
 
 }

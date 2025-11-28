@@ -37,6 +37,7 @@
 
             return await _roleRepository.GetUserRolesAsync(user);
         }
+        
 
         public async Task<IList<RolesResponse>> GetAllRolesAsync(string lan)
         {
@@ -52,6 +53,15 @@
             }).ToList();
 
             return rolesResult;
+        }
+
+        public async Task<IdentityResult> DeleteRole(string roleId)
+        {
+           var role=await _roleRepository.GetRoleByIdAsync(roleId);
+            if (role == null)
+                throw new NotFoundException("RoleNotFound");
+            var result = await _roleRepository.DeleteRoleAsync(role);
+            return result;
         }
     }
 }

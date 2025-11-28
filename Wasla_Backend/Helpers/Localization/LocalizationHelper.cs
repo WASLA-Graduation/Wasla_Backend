@@ -365,6 +365,21 @@
                 ["en"] = "Doctor not found.",
                 ["ar"] = "لم يتم العثور على الطبيب."
             },
+            ["RoleIdRequired"]=new()
+            {
+                ["en"] = "Role ID is required.",
+                ["ar"] = "معرف الدور مطلوب."
+            },
+            ["RoleDeletionFailed"]=new()
+            {
+                ["en"] = "Failed to delete the role.",
+                ["ar"] = "فشل في حذف الدور."
+            },
+            ["RoleDeletedSuccessfully"] = new()
+            {
+                ["en"] = "Role deleted successfully.",
+                ["ar"] = "تم حذف الدور بنجاح."
+            },
         };
 
         public static string GetLocalizedMessage(string key, string lan)
