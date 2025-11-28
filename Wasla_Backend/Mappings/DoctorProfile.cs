@@ -4,7 +4,8 @@
     {
         public DoctorProfile() 
         {
-            CreateMap<DoctorCompleteDto, Doctor>();
+            CreateMap<DoctorCompleteDto, Doctor>()
+                .ForMember(d => d.hospitalname, o => o.MapFrom(s => s.hospitalName));
 
             CreateMap<Doctor, DoctorProfileResponse>()
             .ForMember(dest => dest.fullName, opt => opt.MapFrom(src => src.FullName))
