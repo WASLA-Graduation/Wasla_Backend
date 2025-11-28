@@ -7,6 +7,12 @@ namespace Wasla_Backend.Repositories.Implementation
         {
         }
 
+        public async Task<Booking> GetBookingByServiceDayIdAsync(int serviceDayId)
+        {
+            return await _context.Booking
+                .FirstOrDefaultAsync(b => b.serviceDayId == serviceDayId);
+        }
+
         public async Task<List<ServiceBookingDetailsDto>> GetBookingDetailsForUserAsync(string userId, string language)
         {
             var bookingDetails = await _context.Booking

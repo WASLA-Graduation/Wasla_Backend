@@ -19,6 +19,7 @@
         public string end { get; set; }
         public int day { get; set; }
         public BookingType bookingType { get; set; }
+        public bool IsCompleted { get; set; } = false;
         public string? imagesJson { get; set; }
 
         [NotMapped]

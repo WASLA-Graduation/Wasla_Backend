@@ -94,9 +94,27 @@ namespace Wasla_Backend.Services.Implementation
             }
             catch (DbUpdateException ex)
             {
-                throw new Exception(ex.InnerException?.Message ?? ex.Message);
+                if (ex.InnerException?.Message.Contains("IX_Booking_ServiceId") == true)
+                    throw new BadRequestException("ServiceAlreadyBooked");
+
+                throw;
             }
         }
 
+        public async Task ConfermBooking(int serviceDayId)
+        {
+            var booking =await _bookingRepository.GetBookingByServiceDayIdAsync(serviceDayId);
+            if (booking == null)
+                throw new NotFoundException("BookingNotFound");
+            var serviceDay = await _serviceDayRepository.GetByIdAsync(serviceDayId);
+            if (serviceDay == null)
+                throw new NotFoundException("ServiceDayNotFound");
+
+            booking.IsCompleted = true;
+            serviceDay.isBooking = false;
+            _bookingRepository.Update(booking);
+            await _bookingRepository.SaveChangesAsync();
+
+        }
     }
 }

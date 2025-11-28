@@ -23,5 +23,11 @@
             var bookingDetails = await _bookService.GetBookingDetailsForUserAsync(userId, language);
             return Ok(ResponseHelper.Success("BookingRetrievedsuccess", language, bookingDetails));
         }
+        [HttpPut("ConfermBooking/{serviceDayId}")]
+        public async Task<IActionResult> ConfermBooking(int serviceDayId,string lan="en")
+        {
+            await _bookService.ConfermBooking(serviceDayId);
+            return Ok(ResponseHelper.Success("BookingConfirmedSuccessfully", lan));
+        }
     }
 }

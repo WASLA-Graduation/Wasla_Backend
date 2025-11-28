@@ -345,6 +345,21 @@
                 ["en"] = "The selected time slot was not found.",
                 ["ar"] = "لم يتم العثور على الوقت المحدد."
             },
+            ["BookingNotFound"]=new()
+            {
+                ["en"] = "Booking not found.",
+                ["ar"] = "لم يتم العثور على الحجز."
+            },
+            ["ServiceDayNotFound"]= new()
+            {
+                ["en"] = "Service day not found.",
+                ["ar"] = "لم يتم العثور على يوم الخدمة."
+            },
+            ["BookingConfirmedSuccessfully"] = new()
+            {
+                ["en"] = "Booking confirmed successfully.",
+                ["ar"] = "تم تأكيد الحجز بنجاح."
+            }
         };
 
         public static string GetLocalizedMessage(string key, string lan)
