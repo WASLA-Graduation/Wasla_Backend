@@ -115,7 +115,7 @@
         {
             var user = await _userRepository.GetUserByEmailAsync(model.Email);
             if (user == null)
-                throw new NotFoundException("UserNotFound");
+                throw new NotFoundException("EmailNotFound");
 
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
