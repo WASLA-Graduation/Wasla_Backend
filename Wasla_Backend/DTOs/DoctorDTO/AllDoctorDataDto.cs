@@ -11,12 +11,13 @@
         public double graduationYear { get; set; }
         public string hospitalName { get; set; }
         public int numberOfPatient { get; set; }
-       public string birthDay { get; set; }
+        public string birthDay { get; set; }
         public string phone { get; set; }
         public double latitude { get; set; }
         public double longitude { get; set; }
         public string description { get; set; }
         public string imageName { get; set; }
+        public string specialtyName { get; set; }
         public string cv { get; set; }
     }
 }
