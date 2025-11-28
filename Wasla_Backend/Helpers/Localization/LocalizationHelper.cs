@@ -359,7 +359,12 @@
             {
                 ["en"] = "Booking confirmed successfully.",
                 ["ar"] = "تم تأكيد الحجز بنجاح."
-            }
+            },
+            ["DoctorNotFound"]=new()
+            {
+                ["en"] = "Doctor not found.",
+                ["ar"] = "لم يتم العثور على الطبيب."
+            },
         };
 
         public static string GetLocalizedMessage(string key, string lan)
