@@ -7,6 +7,7 @@
         public string specializationName { get; set; }
         public int experienceYears { get; set; }
         public string universityName { get; set; }
+        public string hospitalName { get; set; }
         public int numberOfpatients { get; set; }
         public double graduationYear { get; set; }
         public string birthDay { get; set; }

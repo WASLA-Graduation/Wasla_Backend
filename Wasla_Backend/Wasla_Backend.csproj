@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\assets\cv\doctor\" />
     <Folder Include="wwwroot\assets\images\user\" />
   </ItemGroup>

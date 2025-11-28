@@ -29,7 +29,7 @@ namespace Wasla_Backend.Services.Implementation
             _cvPath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.PathCVDoctor.TrimStart('/'));
         }
         public async Task CompleteData(DoctorCompleteDto doctorCompleteDto)
-        {
+        {   
             var doctor = await _doctorRepository.GetByEmail(doctorCompleteDto.Email);
             
             if(doctor == null)
@@ -69,7 +69,7 @@ namespace Wasla_Backend.Services.Implementation
             var allDoctorDataDtos = _mapper.Map<IEnumerable<AllDoctorDataDto>>(doctors);
             foreach (var doctor in allDoctorDataDtos)
             {
-                doctor.Specialization = await _doctorRepository.GetDoctorSpecializationName(doctor.Id, lan);
+                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.id, lan);
             }
             return allDoctorDataDtos;
         }
@@ -80,7 +80,7 @@ namespace Wasla_Backend.Services.Implementation
             var allDoctorDataDtos = _mapper.Map<IEnumerable<AllDoctorDataDto>>(doctors);
             foreach (var doctor in allDoctorDataDtos)
             {
-                doctor.Specialization = await _doctorRepository.GetDoctorSpecializationName(doctor.Id, lan);
+                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.id, lan);
             }
             return allDoctorDataDtos;
         }

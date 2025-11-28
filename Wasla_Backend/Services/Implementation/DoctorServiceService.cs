@@ -106,14 +106,20 @@
                 descriptionEnglish = service.description.English,
                 price = service.price,
 
-                serviceDays = service.ServiceDays.Select(day => new ServiceDayResponse
-                {
-                    id = day.id,
-                    dayOfWeek = day.dayOfWeek,
-                    start = day.start,
-                    end = day.end,
-                    isBooking = day.isBooking
-                }).ToList(),
+                serviceDays = service.ServiceDays
+                    .GroupBy(d => d.dayOfWeek)
+                    .Select(g => new ServiceDayResponse
+                    {
+                        dayOfWeek = g.Key,
+                        timeSlots = g.Select(slot => new SlotsResonse
+                        {
+                            id = slot.id,
+                            start = slot.start,
+                            end = slot.end,
+                            isBooking = slot.isBooking
+                        }).ToList()
+                    })
+                    .ToList()
             });
         }
 
