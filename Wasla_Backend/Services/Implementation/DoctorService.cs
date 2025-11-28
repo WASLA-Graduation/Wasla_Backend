@@ -25,7 +25,7 @@ namespace Wasla_Backend.Services.Implementation
             _cvPath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.PathCVDoctor.TrimStart('/'));
         }
         public async Task CompleteData(DoctorCompleteDto doctorCompleteDto)
-        {
+        {   
             var doctor = await _doctorRepository.GetByEmail(doctorCompleteDto.Email);
             
             if(doctor == null)
