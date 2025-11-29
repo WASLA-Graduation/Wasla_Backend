@@ -1,7 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc.Razor;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class DoctorService : IDoctorService
     {
@@ -16,7 +13,13 @@ namespace Wasla_Backend.Services.Implementation
             IWebHostEnvironment webHostEnvironment, 
             IMapper mapper, 
             IStringLocalizer<DoctorService> localizer,
+<<<<<<< Updated upstream
             IGenericRepository<DoctorSpecialization> doctorSpecializationRepository)
+=======
+            IGenericRepository<DoctorSpecialization> doctorSpecializationRepository,
+            IBookingRepository bookingRepository
+            )
+>>>>>>> Stashed changes
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
