@@ -380,6 +380,11 @@
                 ["en"] = "Role deleted successfully.",
                 ["ar"] = "تم حذف الدور بنجاح."
             },
+            ["FetchDoctorChartSuccess"] = new()
+            {
+                ["en"] = "Doctor chart fetched successfully.",
+                ["ar"] = "تم جلب مخطط الطبيب بنجاح."
+            },
         };
 
         public static string GetLocalizedMessage(string key, string lan)

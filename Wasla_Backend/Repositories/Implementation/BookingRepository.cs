@@ -7,6 +7,33 @@ namespace Wasla_Backend.Repositories.Implementation
         {
         }
 
+        public async Task<int> CountBookings(string doctorId)
+        {
+            return await _context.Booking
+                .Where(b => b.serviceProviderId == doctorId
+                   && b.serviceProviderType == ServiceProviderType.Doctor)
+                .CountAsync();
+        }
+
+        public async Task<int> CountCompletedBookings(string doctorId)
+        {
+            return await _context.Booking
+                .Where(b => b.serviceProviderId == doctorId
+                   && b.serviceProviderType == ServiceProviderType.Doctor
+                   && b.IsCompleted)
+                .CountAsync();
+        }
+
+        public async Task<int> CountPatients(string doctorId)
+        {
+            return await _context.Booking
+                  .Where(b => b.serviceProviderId == doctorId
+                   && b.serviceProviderType == ServiceProviderType.Doctor)
+                  .Select(b => b.userId)
+                  .Distinct()
+                  .CountAsync();
+        }
+
         public async Task<Booking> GetBookingByServiceDayIdAsync(int serviceDayId)
         {
             return await _context.Booking
@@ -48,10 +75,41 @@ namespace Wasla_Backend.Repositories.Implementation
                 .FirstOrDefaultAsync(b => b.serviceDayId == serviceDayId);
         }
 
+        public async Task<List<Booking>> GetByServiceProviderId(string userId)
+        {
+            return await _context.Booking
+                .Where(b => b.serviceProviderId == userId)
+                .ToListAsync();
+        }
+        
+
         public async Task<bool> GetByUserIdAndDoctorID(string userId, string doctorId)
         {
            return await _context.Booking
                 .AnyAsync(b => b.userId == userId && b.serviceProviderId == doctorId);
+        }
+
+        public async Task<List<CollectedPricePerYearDto>> GetCollectedPriceByYear(string doctorId)
+        {
+            return await _context.Booking
+                .Where(b => b.serviceProviderId == doctorId
+                    && b.serviceProviderType == ServiceProviderType.Doctor)
+                .GroupBy(b => b.bookingDate.Year)
+                .Select(yearGroup => new CollectedPricePerYearDto
+                {
+                    year = yearGroup.Key,
+                    months = yearGroup
+                        .GroupBy(b => b.bookingDate.Month)
+                        .Select(monthGroup => new CollectedPricePerMonthDto
+                        {
+                            month = monthGroup.Key,
+                            amount = monthGroup.Sum(b => (decimal)b.price)
+                        })
+                        .OrderBy(m => m.month)
+                        .ToList()
+                })
+                .OrderBy(y => y.year)
+                .ToListAsync();
         }
 
         public async Task<int> GetNumberOfPatientByDoctorId(string doctorId)
@@ -64,6 +122,11 @@ namespace Wasla_Backend.Repositories.Implementation
                   .CountAsync();
         }
 
-        
+        public async Task<decimal> GetTotalAmount(string doctorId)
+        {
+            return await _context.Booking
+                .Where(b=>b.serviceProviderId == doctorId && b.serviceProviderType == ServiceProviderType.Doctor)
+                .SumAsync(b => (decimal)b.price);
+        }
     }
 }

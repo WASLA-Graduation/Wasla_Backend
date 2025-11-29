@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Services.Implementation
+﻿using System.Linq;
+
+namespace Wasla_Backend.Services.Implementation
 {
     public class DoctorService : IDoctorService
     {
@@ -86,6 +88,24 @@
             return allDoctorDataDtos;
         }
 
+        public async Task<DoctorChartDto> GetDoctorChart(string doctorId)
+        {
+            var doctor = await _doctorRepository.GetById(doctorId);
+            
+            if (doctor == null)
+                throw new NotFoundException("DoctorNotFound");
+
+            return new DoctorChartDto
+            {
+                numOfPatients = await _bookingRepository.CountPatients(doctorId),
+                numOfBookings = await _bookingRepository.CountBookings(doctorId),
+                numOfCompletedBookings = await _bookingRepository.CountCompletedBookings(doctorId),
+                totalAmount = await _bookingRepository.GetTotalAmount(doctorId),
+                years = await _bookingRepository.GetCollectedPriceByYear(doctorId),
+            };
+        }
+
+
         public async Task<DoctorProfileResponse> GetDoctorProfile(string id, string lan)
         {
             var doctor = await _doctorRepository.GetById(id);
@@ -100,5 +120,6 @@
 
             return doctorProfileResponse;
         }
+
     }
 }

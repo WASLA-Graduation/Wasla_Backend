@@ -1,4 +1,4 @@
-﻿namespace Wasla_Backend.Models
+﻿namespace Wasla_Backend.Enums
 {
     public enum ServiceProviderType
     {

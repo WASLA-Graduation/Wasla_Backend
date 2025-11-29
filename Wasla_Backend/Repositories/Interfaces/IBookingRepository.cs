@@ -1,12 +1,17 @@
-﻿
-namespace Wasla_Backend.Repositories.Interfaces
+﻿namespace Wasla_Backend.Repositories.Interfaces
 {
     public interface IBookingRepository : IGenericRepository<Booking>
     {
         public Task<List<ServiceBookingDetailsDto>> GetBookingDetailsForUserAsync(string userId, string language);
         public Task<Booking> GetBookingByServiceDayIdAsync(int serviceDayId);
         public Task<int>GetNumberOfPatientByDoctorId(string doctorId);
+        public Task<int> CountPatients(string doctorId);
+        public Task<int> CountBookings(string doctorId);
+        public Task<int> CountCompletedBookings(string doctorId);
+        public Task<decimal> GetTotalAmount(string doctorId);
+        public Task<List<CollectedPricePerYearDto>> GetCollectedPriceByYear(string doctorId);
         public Task<Booking>GetByServiceDayId(int serviceDayId);
+        public Task<List<Booking>> GetByServiceProviderId(string userId);
         public Task<bool>GetByUserIdAndDoctorID(string userId, string doctorId);
     }
 }

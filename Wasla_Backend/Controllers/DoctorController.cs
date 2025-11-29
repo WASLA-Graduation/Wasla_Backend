@@ -31,7 +31,14 @@
             var doctorProfiles = await _doctorService.GetDoctorProfile(id, lan);
             return Ok(ResponseHelper.Success("FetchDoctorProfileSuccess", lan, doctorProfiles));
         }
-   
+
+        [HttpGet("GetDoctorChart/{doctorId}")]
+        public async Task<IActionResult> GetDoctorChart(string doctorId,string lan="en")
+        {
+            var doctorChart = await _doctorService.GetDoctorChart(doctorId);
+            return Ok(ResponseHelper.Success("FetchDoctorChartSuccess", lan, doctorChart));
+        }
+
         [HttpGet("GetDoctorBySpecialist/{specialistId}")]
         public async Task<IActionResult> GetDoctorBySpecialist(int specialistId = 0, string lan = "en")
         {
