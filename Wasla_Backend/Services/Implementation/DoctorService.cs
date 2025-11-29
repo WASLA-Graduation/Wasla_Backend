@@ -5,40 +5,40 @@
         private readonly IDoctorRepository _doctorRepository;
         private readonly IMapper _mapper;
         private readonly IGenericRepository<DoctorSpecialization> _doctorSpecializationRepository;
+        private readonly IBookingRepository _bookingRepository;
         private readonly string _imagePath;
         private readonly string _cvPath;
 
-
-        public DoctorService(IDoctorRepository doctorRepository, 
-            IWebHostEnvironment webHostEnvironment, 
-            IMapper mapper, 
+        public DoctorService(
+            IDoctorRepository doctorRepository,
+            IWebHostEnvironment webHostEnvironment,
+            IMapper mapper,
             IStringLocalizer<DoctorService> localizer,
-<<<<<<< Updated upstream
-            IGenericRepository<DoctorSpecialization> doctorSpecializationRepository)
-=======
             IGenericRepository<DoctorSpecialization> doctorSpecializationRepository,
             IBookingRepository bookingRepository
-            )
->>>>>>> Stashed changes
+        )
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
             _doctorSpecializationRepository = doctorSpecializationRepository;
+            _bookingRepository = bookingRepository;
+
             _imagePath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.ImagesPathUser.TrimStart('/'));
             _cvPath = Path.Combine(webHostEnvironment.WebRootPath, FileSetting.PathCVDoctor.TrimStart('/'));
         }
+
         public async Task CompleteData(DoctorCompleteDto doctorCompleteDto)
-        {   
+        {
             var doctor = await _doctorRepository.GetByEmail(doctorCompleteDto.Email);
-            
-            if(doctor == null)
+
+            if (doctor == null)
                 throw new NotFoundException("UserNotFound");
 
             _mapper.Map(doctorCompleteDto, doctor);
 
             var image = await FileOperation.SaveFile(doctorCompleteDto.Image, _imagePath);
             var cv = await FileOperation.SaveFile(doctorCompleteDto.CV, _cvPath);
-            
+
             doctor.ProfilePhoto = image;
             doctor.CV = cv;
             doctor.IsCompleteRegistration = true;
@@ -51,52 +51,54 @@
         {
             var doctorSpecialization = await _doctorSpecializationRepository.GetAllAsync();
 
-            
-            var SpecializationResponse = doctorSpecialization.Select(ds => new DoctorSpecializationResponse
+            var specializationResponse = doctorSpecialization.Select(ds => new DoctorSpecializationResponse
             {
                 Id = ds.Id,
                 Name = ds.Specialization.GetText(lan)
             });
 
-            return SpecializationResponse;
+            return specializationResponse;
         }
 
         public async Task<IEnumerable<AllDoctorDataDto>> GetAllDoctors(string lan)
         {
-           var doctors =await _doctorRepository.GetAllSortedByRating();
-          
+            var doctors = await _doctorRepository.GetAllSortedByRating();
+
             var allDoctorDataDtos = _mapper.Map<IEnumerable<AllDoctorDataDto>>(doctors);
             foreach (var doctor in allDoctorDataDtos)
             {
-                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.id, lan);
+                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.Id, lan);
             }
+
             return allDoctorDataDtos;
         }
 
-        public async Task<IEnumerable<AllDoctorDataDto>> GetDoctorBySpecialist(int specialistId,string lan)
+        public async Task<IEnumerable<AllDoctorDataDto>> GetDoctorBySpecialist(int specialistId, string lan)
         {
-           var doctors =await _doctorRepository.GetBySpecialist(specialistId);
+            var doctors = await _doctorRepository.GetBySpecialist(specialistId);
+
             var allDoctorDataDtos = _mapper.Map<IEnumerable<AllDoctorDataDto>>(doctors);
             foreach (var doctor in allDoctorDataDtos)
             {
-                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.id, lan);
+                doctor.specialtyName = await _doctorRepository.GetDoctorSpecializationName(doctor.Id, lan);
             }
+
             return allDoctorDataDtos;
         }
 
-        public async Task<DoctorProfileResponse> GetDoctorProfile(string id , string lan)
+        public async Task<DoctorProfileResponse> GetDoctorProfile(string id, string lan)
         {
             var doctor = await _doctorRepository.GetById(id);
-            
+
             if (doctor == null)
                 throw new NotFoundException("DoctorNotFound");
 
-            var doctorProfileResponses = _mapper.Map<DoctorProfileResponse>(doctor, opt =>
+            var doctorProfileResponse = _mapper.Map<DoctorProfileResponse>(doctor, opt =>
             {
                 opt.Items["lan"] = lan;
             });
 
-            return doctorProfileResponses;
+            return doctorProfileResponse;
         }
     }
 }

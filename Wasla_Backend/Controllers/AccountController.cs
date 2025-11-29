@@ -38,7 +38,7 @@
             var returnModel = new
             {
                 model.Email,
-                model.Role
+                model.roleId
             };
 
             return Ok(ResponseHelper.Success("RegistrationSuccess", lan, returnModel));

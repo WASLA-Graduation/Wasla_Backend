@@ -42,5 +42,28 @@ namespace Wasla_Backend.Repositories.Implementation
             return bookingDetails;
         }
 
+        public async Task<Booking> GetByServiceDayId(int serviceDayId)
+        {
+            return await _context.Booking
+                .FirstOrDefaultAsync(b => b.serviceDayId == serviceDayId);
+        }
+
+        public async Task<bool> GetByUserIdAndDoctorID(string userId, string doctorId)
+        {
+           return await _context.Booking
+                .AnyAsync(b => b.userId == userId && b.serviceProviderId == doctorId);
+        }
+
+        public async Task<int> GetNumberOfPatientByDoctorId(string doctorId)
+        {
+            return await _context.Booking
+                    .Where(b => b.serviceProviderId == doctorId
+                   && b.serviceProviderType == ServiceProviderType.Doctor)
+                  .Select(b => b.userId)
+                  .Distinct()
+                  .CountAsync();
+        }
+
+        
     }
 }

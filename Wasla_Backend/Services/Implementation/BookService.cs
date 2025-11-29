@@ -37,6 +37,7 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task Book(BookServiceDto dto)
         {
+
             var user = await _userRepository.GetUserByIdAsync(dto.userId);
             if (user == null)
                 throw new NotFoundException("UserNotFound");
@@ -52,6 +53,7 @@ namespace Wasla_Backend.Services.Implementation
             if (serviceDay.isBooking)
                 throw new BadRequestException("ServiceAlreadyBooked");
 
+
             List<string> savedImages = new();
             if (dto.images != null)
             {
@@ -61,45 +63,65 @@ namespace Wasla_Backend.Services.Implementation
                     savedImages.Add(path);
                 }
             }
-
-            var booking = new Booking
+            var Booking = await _bookingRepository.GetByServiceDayId(dto.serviceDayId);
+            if (Booking != null)
             {
-                userId = dto.userId,
-                serviceProviderId = dto.serviceProviderId,
-                price = dto.price,
-                serviceProviderType = dto.serviceProviderType,
-                bookingDate = dto.bookingDate,
-                bookingType = dto.bookingType,
-                day = dto.day,
-                start = serviceDay.start,
-                end = serviceDay.end,
-                images = savedImages,
-                serviceDayId = dto.serviceDayId   
-            };
+                Booking.images = savedImages;
+                Booking.bookingDate = dto.bookingDate;
+                Booking.IsCompleted = false;
+                Booking.userId = dto.userId;
+                serviceDay.isBooking = true;
+                _bookingRepository.Update(Booking);
 
-            serviceDay.isBooking = true;
-            _serviceDayRepository.Update(serviceDay);
+            }
+            else
+            {
+                var booking = new Booking
+                {
+                    userId = dto.userId,
+                    serviceProviderId = dto.serviceProviderId,
+                    price = dto.price,
+                    serviceProviderType = dto.serviceProviderType,
+                    bookingDate = dto.bookingDate,
+                    bookingType = dto.bookingType,
+                    day = dto.day,
+                    start = serviceDay.start,
+                    end = serviceDay.end,
+                    images = savedImages,
+                    serviceDayId = dto.serviceDayId
+                };
 
+                serviceDay.isBooking = true;
+                _serviceDayRepository.Update(serviceDay);
+
+                await _bookingRepository.AddAsync(booking);
+            }
             if (serviceProvider is Doctor doc)
             {
-                doc.NumberOfPatient += 1;
-                _doctorRepository.Update(doc);
+                var IsExistingBooking = await _bookingRepository.GetByUserIdAndDoctorID(dto.userId, doc.Id);
+                if (!IsExistingBooking)
+                {
+                    doc.numberOfpatients += 1;
+                    _doctorRepository.Update(doc);
+                }
             }
-
-            await _bookingRepository.AddAsync(booking);
-
             try
-            {
-                await _bookingRepository.SaveChangesAsync();   
-            }
-            catch (DbUpdateException ex)
-            {
-                if (ex.InnerException?.Message.Contains("IX_Booking_ServiceId") == true)
-                    throw new BadRequestException("ServiceAlreadyBooked");
+               {
+                await _bookingRepository.SaveChangesAsync();
+                await _doctorRepository.SaveChangesAsync(); 
 
-                throw;
-            }
-        }
+                }
+            catch (DbUpdateException ex)
+                                        {
+                        if (ex.InnerException?.Message.Contains("IX_Booking_serviceDayId") == true)
+                            throw new BadRequestException("ServiceAlreadyBooked");
+
+                        throw;
+                                         }
+                }
+            
+        
+
 
         public async Task ConfermBooking(int serviceDayId)
         {
