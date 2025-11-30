@@ -85,6 +85,7 @@ namespace Wasla_Backend
                 });
             });
 
+            builder.Services.AddHostedService<BookingStatusUpdaterService>();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

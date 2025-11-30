@@ -117,7 +117,7 @@
                             start = slot.start,
                             end = slot.end,
                             isBooking = slot.isBooking
-                        }).Where(b=> b.isBooking == false).ToList()
+                        }).ToList()
                     })
                     .ToList()
             });

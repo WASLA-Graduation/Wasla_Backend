@@ -7,8 +7,12 @@
         public string userName { get; set; }
         public string userImage { get; set; }
         public string date { get; set; }
-        public string timeSlot { get; set; }
+        public string start { get; set; }
+        public string end { get; set; }
+        public int day { get; set; }
         public string bookingType { get; set; }
+        public string phone { get; set; }
+        public decimal price { get; set; }
         public List<string>? bookingImages { get; set; }
     }
 }

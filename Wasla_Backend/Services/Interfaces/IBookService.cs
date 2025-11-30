@@ -5,6 +5,5 @@
         public Task<List<ServiceBookingDetailsDto>> GetBookingDetailsForUserAsync(string userId, string language);
 
         public Task Book(BookServiceDto bookServiceDto);
-        public Task ConfermBooking(int serviceId);
     }
 }

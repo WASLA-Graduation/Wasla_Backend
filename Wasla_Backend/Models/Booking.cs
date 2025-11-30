@@ -14,12 +14,12 @@
         public string serviceProviderId { get; set; }
         public double price { get; set; }
         public ServiceProviderType serviceProviderType { get; set; }
+        public BookingStatus bookingStatus { get; set; } = BookingStatus.upcoming;
         public DateOnly bookingDate { get; set; }
         public string start { get; set; }
         public string end { get; set; }
         public int day { get; set; }
         public BookingType bookingType { get; set; }
-        public bool IsCompleted { get; set; } = false;
         public string? imagesJson { get; set; }
 
         [NotMapped]

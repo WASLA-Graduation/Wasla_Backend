@@ -12,6 +12,7 @@
         public Task<List<CollectedPricePerYearDto>> GetCollectedPriceByYear(string doctorId);
         public Task<Booking>GetByServiceDayId(int serviceDayId);
         public Task<List<Booking>> GetByServiceProviderId(string userId);
+        public Task<List<GetAllBookingResponse>> GetBookingsByDoctorIdAsync(string doctorId, BookingStatus status, string lan);
         public Task<bool>GetByUserIdAndDoctorID(string userId, string doctorId);
     }
 }

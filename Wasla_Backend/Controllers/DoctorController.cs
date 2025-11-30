@@ -39,6 +39,13 @@
             return Ok(ResponseHelper.Success("FetchDoctorChartSuccess", lan, doctorChart));
         }
 
+        [HttpGet("GetAllBookingsOfDoctor/{doctorId}/{status}")]
+        public async Task<IActionResult> GetAllBookingOfDoctors(string doctorId, BookingStatus status = BookingStatus.upcoming, string lan = "en")
+        {
+            var bookings = await _doctorService.GetAllBookingOfDoctors(doctorId,status,lan);
+            return Ok(ResponseHelper.Success("FetchAllBookingOfDoctorsSuccess", lan, bookings));
+        }
+
         [HttpGet("GetDoctorBySpecialist/{specialistId}")]
         public async Task<IActionResult> GetDoctorBySpecialist(int specialistId = 0, string lan = "en")
         {

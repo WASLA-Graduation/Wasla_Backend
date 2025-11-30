@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using MimeKit.Cryptography;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class BookService: IBookService
     {
@@ -68,7 +65,7 @@ namespace Wasla_Backend.Services.Implementation
             {
                 Booking.images = savedImages;
                 Booking.bookingDate = dto.bookingDate;
-                Booking.IsCompleted = false;
+                Booking.bookingStatus = BookingStatus.upcoming;
                 Booking.userId = dto.userId;
                 serviceDay.isBooking = true;
                 _bookingRepository.Update(Booking);
@@ -106,37 +103,18 @@ namespace Wasla_Backend.Services.Implementation
                 }
             }
             try
-               {
+            {
                 await _bookingRepository.SaveChangesAsync();
                 await _doctorRepository.SaveChangesAsync(); 
 
-                }
+            }
             catch (DbUpdateException ex)
-                                        {
-                        if (ex.InnerException?.Message.Contains("IX_Booking_serviceDayId") == true)
-                            throw new BadRequestException("ServiceAlreadyBooked");
+            {
+                if (ex.InnerException?.Message.Contains("IX_Booking_serviceDayId") == true)
+                    throw new BadRequestException("ServiceAlreadyBooked");
 
-                        throw;
-                                         }
-                }
-            
-        
-
-
-        public async Task ConfermBooking(int serviceDayId)
-        {
-            var booking =await _bookingRepository.GetBookingByServiceDayIdAsync(serviceDayId);
-            if (booking == null)
-                throw new NotFoundException("BookingNotFound");
-            var serviceDay = await _serviceDayRepository.GetByIdAsync(serviceDayId);
-            if (serviceDay == null)
-                throw new NotFoundException("ServiceDayNotFound");
-
-            booking.IsCompleted = true;
-            serviceDay.isBooking = false;
-            _bookingRepository.Update(booking);
-            await _bookingRepository.SaveChangesAsync();
-
+                throw;                                        
+            }
         }
     }
 }

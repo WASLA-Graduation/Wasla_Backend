@@ -1,4 +1,4 @@
-﻿namespace Wasla_Backend.BackgroundServices
+﻿namespace Wasla_Backend.Helpers.BackgroundServiceHelper
 {
     public class ExpiredEmailVerificationCleaner : BackgroundService
     {

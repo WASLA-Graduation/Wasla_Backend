@@ -2,8 +2,8 @@
 {
     public enum BookingStatus
     {
-        upcoming,
-        completed,
-        all
+        upcoming = 0,
+        completed = 1,
+        all = 2
     }
 }

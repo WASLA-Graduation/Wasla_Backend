@@ -385,6 +385,16 @@
                 ["en"] = "Doctor chart fetched successfully.",
                 ["ar"] = "تم جلب مخطط الطبيب بنجاح."
             },
+            ["InvalidBookingStatus"] = new()
+            {
+                ["en"] = "Invalid booking status.",
+                ["ar"] = "حالة الحجز غير صالحة."
+            },
+            ["FetchAllBookingOfDoctorsSuccess"] = new()
+            {
+                ["en"] = "All doctor bookings fetched successfully.",
+                ["ar"] = "تم جلب جميع حجوزات الطبيب بنجاح."
+            },
         };
 
         public static string GetLocalizedMessage(string key, string lan)

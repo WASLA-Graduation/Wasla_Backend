@@ -105,7 +105,18 @@ namespace Wasla_Backend.Services.Implementation
             };
         }
 
+        public async Task<List<GetAllBookingResponse>> GetAllBookingOfDoctors(string docId, BookingStatus status, string lan)
+        {
+            var doctor = await _doctorRepository.GetById(docId);
+            
+            if (doctor == null)
+                throw new BadRequestException("DoctorNotFound");
 
+            if (!Enum.IsDefined(typeof(BookingStatus), status))
+                throw new BadRequestException("InvalidBookingStatus");
+
+            return await  _bookingRepository.GetBookingsByDoctorIdAsync(docId, status, lan);
+        }
         public async Task<DoctorProfileResponse> GetDoctorProfile(string id, string lan)
         {
             var doctor = await _doctorRepository.GetById(id);

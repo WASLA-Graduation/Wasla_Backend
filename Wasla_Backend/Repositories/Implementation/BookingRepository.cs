@@ -15,12 +15,43 @@ namespace Wasla_Backend.Repositories.Implementation
                 .CountAsync();
         }
 
+        public async Task<List<GetAllBookingResponse>> GetBookingsByDoctorIdAsync(string doctorId, BookingStatus status,string lan)
+        {
+
+            return await _context.Booking
+                .Where(b => b.serviceProviderId == doctorId
+                   && b.serviceProviderType == ServiceProviderType.Doctor
+                   && b.bookingStatus == status)
+                .Include(b => b.serviceDay) 
+                    .ThenInclude(sd => sd.service)
+                .Include(b => b.user)
+                .AsNoTracking()
+                .Select(b => new GetAllBookingResponse
+                {
+                    bookingId = b.Id,
+                    date = b.bookingDate.ToString(),
+                    start = b.serviceDay.start,
+                    end = b.serviceDay.end,
+                    serviceName = lan.ToLower() == "ar"
+                        ? b.serviceDay.service.serviceName.Arabic
+                        : b.serviceDay.service.serviceName.English,
+                    userName = b.user.FullName,
+                    userImage = b.user.ProfilePhoto,
+                    bookingType = b.bookingType.ToString(),
+                    phone = b.user.Phone,
+                    day = b.day,
+                    price = (decimal)b.price,
+                    bookingImages = b.images
+                })
+                .ToListAsync();
+        }
+
         public async Task<int> CountCompletedBookings(string doctorId)
         {
             return await _context.Booking
                 .Where(b => b.serviceProviderId == doctorId
                    && b.serviceProviderType == ServiceProviderType.Doctor
-                   && b.IsCompleted)
+                   && b.bookingStatus == BookingStatus.completed)
                 .CountAsync();
         }
 
@@ -93,7 +124,7 @@ namespace Wasla_Backend.Repositories.Implementation
         {
             return await _context.Booking
                 .Where(b => b.serviceProviderId == doctorId
-                    && b.serviceProviderType == ServiceProviderType.Doctor && b.IsCompleted == true)
+                    && b.serviceProviderType == ServiceProviderType.Doctor && b.bookingStatus == BookingStatus.completed)
                 .GroupBy(b => b.bookingDate.Year)
                 .Select(yearGroup => new CollectedPricePerYearDto
                 {
@@ -125,7 +156,9 @@ namespace Wasla_Backend.Repositories.Implementation
         public async Task<decimal> GetTotalAmount(string doctorId)
         {
             return await _context.Booking
-                .Where(b=>b.serviceProviderId == doctorId && b.serviceProviderType == ServiceProviderType.Doctor && b.IsCompleted == true)
+                .Where(b=>b.serviceProviderId == doctorId && 
+                       b.serviceProviderType == ServiceProviderType.Doctor &&
+                       b.bookingStatus == BookingStatus.completed)
                 .SumAsync(b => (decimal)b.price);
         }
     }

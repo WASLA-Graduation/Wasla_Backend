@@ -38,7 +38,6 @@ global using Wasla_Backend.Helpers.Response;
 global using Wasla_Backend.DTOs;
 global using Wasla_Backend.DTOs.Authentication;
 global using Wasla_Backend.Helpers.Localization;
-global using Wasla_Backend.BackgroundServices;
 global using Wasla_Backend.Helpers;
 global using Wasla_Backend.Exceptions;
 global using Wasla_Backend.Helpers.EmailSender;
@@ -50,6 +49,7 @@ global using Wasla_Backend.DTOs.RoleDTOS;
 global using Wasla_Backend.DTOs.ServiceDTOS;
 global using Wasla_Backend.DTOs.ReviewDtos;
 global using Wasla_Backend.DTOs.BookDTOS;
+global using Wasla_Backend.Helpers.BackgroundServiceHelper;
 
 
 
