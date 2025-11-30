@@ -15,17 +15,23 @@ namespace Wasla_Backend.Repositories.Implementation
                 .CountAsync();
         }
 
-        public async Task<List<GetAllBookingResponse>> GetBookingsByDoctorIdAsync(string doctorId, BookingStatus status,string lan)
+        public async Task<List<GetAllBookingResponse>> GetBookingsByDoctorIdAsync(
+           string doctorId, BookingStatus status, string lan)
         {
-
-            return await _context.Booking
+            var query = _context.Booking
                 .Where(b => b.serviceProviderId == doctorId
-                   && b.serviceProviderType == ServiceProviderType.Doctor
-                   && b.bookingStatus == status)
-                .Include(b => b.serviceDay) 
+                    && b.serviceProviderType == ServiceProviderType.Doctor)
+                .Include(b => b.serviceDay)
                     .ThenInclude(sd => sd.service)
                 .Include(b => b.user)
-                .AsNoTracking()
+                .AsNoTracking();
+
+            if (status != BookingStatus.all)
+            {
+                query = query.Where(b => b.bookingStatus == status);
+            }
+
+            return await query
                 .Select(b => new GetAllBookingResponse
                 {
                     bookingId = b.Id,

@@ -97,7 +97,7 @@ namespace Wasla_Backend.Services.Implementation
 
             return new DoctorChartDto
             {
-                numOfPatients = await _bookingRepository.CountPatients(doctorId),
+                numOfPatients = await _bookingRepository.GetNumberOfPatientByDoctorId(doctorId),
                 numOfBookings = await _bookingRepository.CountBookings(doctorId),
                 numOfCompletedBookings = await _bookingRepository.CountCompletedBookings(doctorId),
                 totalAmount = await _bookingRepository.GetTotalAmount(doctorId),
