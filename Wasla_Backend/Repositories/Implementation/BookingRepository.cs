@@ -43,7 +43,7 @@ namespace Wasla_Backend.Repositories.Implementation
                         : b.serviceDay.service.serviceName.English,
                     userName = b.user.FullName,
                     userImage = b.user.ProfilePhoto,
-                    bookingType = b.bookingType.ToString(),
+                    bookingType = b.bookingType,
                     phone = b.user.Phone,
                     day = b.serviceDay.dayOfWeek,
                     price = (decimal)b.price,
