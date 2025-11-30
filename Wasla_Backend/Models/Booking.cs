@@ -16,8 +16,6 @@
         public ServiceProviderType serviceProviderType { get; set; }
         public BookingStatus bookingStatus { get; set; } = BookingStatus.upcoming;
         public DateOnly bookingDate { get; set; }
-        public string start { get; set; }
-        public string end { get; set; }
         public BookingType bookingType { get; set; }
         public string? imagesJson { get; set; }
 

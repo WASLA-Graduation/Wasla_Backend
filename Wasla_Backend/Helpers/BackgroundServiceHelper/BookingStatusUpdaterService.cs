@@ -31,7 +31,7 @@
                         .Include(b => b.serviceDay)
                         .Where(b =>
                             b.bookingStatus == BookingStatus.upcoming &&
-                            DateTime.Parse($"{b.bookingDate} {b.end}") <= now
+                            DateTime.Parse($"{b.bookingDate} {b.serviceDay.dayOfWeek}") <= now
                         )
                         .ToListAsync(stoppingToken);
 
