@@ -93,7 +93,7 @@ namespace Wasla_Backend.Repositories.Implementation
         {
             return await _context.Booking
                 .Where(b => b.serviceProviderId == doctorId
-                    && b.serviceProviderType == ServiceProviderType.Doctor)
+                    && b.serviceProviderType == ServiceProviderType.Doctor && b.IsCompleted == true)
                 .GroupBy(b => b.bookingDate.Year)
                 .Select(yearGroup => new CollectedPricePerYearDto
                 {
@@ -125,7 +125,7 @@ namespace Wasla_Backend.Repositories.Implementation
         public async Task<decimal> GetTotalAmount(string doctorId)
         {
             return await _context.Booking
-                .Where(b=>b.serviceProviderId == doctorId && b.serviceProviderType == ServiceProviderType.Doctor)
+                .Where(b=>b.serviceProviderId == doctorId && b.serviceProviderType == ServiceProviderType.Doctor && b.IsCompleted == true)
                 .SumAsync(b => (decimal)b.price);
         }
     }
