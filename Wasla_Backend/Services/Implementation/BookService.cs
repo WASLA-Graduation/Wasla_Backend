@@ -81,7 +81,6 @@
                     serviceProviderType = dto.serviceProviderType,
                     bookingDate = dto.bookingDate,
                     bookingType = dto.bookingType,
-                    day = dto.day,
                     start = serviceDay.start,
                     end = serviceDay.end,
                     images = savedImages,

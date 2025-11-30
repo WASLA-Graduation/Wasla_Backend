@@ -39,7 +39,7 @@ namespace Wasla_Backend.Repositories.Implementation
                     userImage = b.user.ProfilePhoto,
                     bookingType = b.bookingType.ToString(),
                     phone = b.user.Phone,
-                    day = b.day,
+                    day = b.serviceDay.dayOfWeek,
                     price = (decimal)b.price,
                     bookingImages = b.images
                 })
