@@ -1226,6 +1226,11 @@
                 ["en"] = "Driver not found.",
                 ["ar"] = "السائق غير موجود."
             },
+            [LocalizationKey.CheckRideSuccessFully]=new()
+            {
+                ["en"]= "Is In Ride Checked SuccessFully",
+                ["ar"]="تم التأكد من وجود المستخدم في رحلة"
+            },
             [LocalizationKey.VehicleNumberAlreadyExists] = new()
             {
                 ["en"] = "Vehicle number already exists.",

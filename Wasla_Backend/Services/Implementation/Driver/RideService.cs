@@ -462,5 +462,10 @@
 
             return ride.Id;
         }
+
+        public async Task<int?> IsInRide(string userId)
+        {
+            return await _rideRepository.IsInRide(userId);
+        }
     }
 }

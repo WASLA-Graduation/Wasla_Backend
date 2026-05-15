@@ -97,5 +97,11 @@ namespace Wasla_Backend.Controllers.Driver
             var result = await _rideServices.GetDriverChart(driverId);
             return Ok(ResponseHelper.Success(LocalizationKey.GetDriverChartSuccessfully, lan, result));
         }
+        [HttpGet("IsInRide")]
+        public async Task<IActionResult> IsInRide(string userId,string lan="en")
+        {
+            var result = await _rideServices.IsInRide(userId);
+            return Ok(ResponseHelper.Success(LocalizationKey.CheckRideSuccessFully));
+        }
     }
 }

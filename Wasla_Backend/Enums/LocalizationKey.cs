@@ -362,6 +362,7 @@
         RideNotAvailable,
         RideAlreadyCancelled,
         DriverOnTrip,
+        CheckRideSuccessFully,
     #endregion
 
         #region ChatAndUserKeys

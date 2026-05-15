@@ -200,7 +200,16 @@ namespace Wasla_Backend.Repositories.Implementation.driver
             };
         }
 
-
-
+        public async Task<int?> IsInRide(string userId)
+        {
+            return await _context.rides
+                .Where(r =>
+                    (r.ResidentId == userId || r.DriverId == userId) &&
+                    (r.Status == RideStatus.InProgress ||
+                     r.Status == RideStatus.Accepted ||
+                     r.Status == RideStatus.Pending))
+                .Select(r => (int?)r.Id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

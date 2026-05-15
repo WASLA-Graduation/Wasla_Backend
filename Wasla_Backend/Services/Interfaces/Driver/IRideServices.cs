@@ -17,6 +17,7 @@ namespace Wasla_Backend.Services.Interfaces.Driver
         public Task CheckRideAcceptance(int rideId);
         public Task<int> ChooseDriver(ChooseDriverDto chooseDriverDto, string lan);
         public Task<int> RejectRide(int rideId, string driverId, string lan);
+        public Task<int?> IsInRide(string userId);
 
 
 
