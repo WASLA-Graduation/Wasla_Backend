@@ -35,6 +35,18 @@
 
             app.MapControllers();
 
+            RecurringJob.AddOrUpdate<HangfireFunctions>(
+                "DeleteOldMessages",
+                x => x.DeleteMessagesInChat(),
+                Cron.Daily
+            );
+
+            RecurringJob.AddOrUpdate<HangfireFunctions>(
+                "DeletePendingOrders",
+                x => x.DeletePendingOrders(),
+                Cron.Daily
+            );
+
             return app;
         }
     }
