@@ -9,5 +9,6 @@
         public string imageUrl { get; set; }
         public int? preparationTime { get; set; }
         public bool isAvailable { get; set; }
+        public bool isDeleted { get; set; }
     }
 }
