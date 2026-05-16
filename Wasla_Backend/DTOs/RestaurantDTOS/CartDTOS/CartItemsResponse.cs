@@ -9,5 +9,7 @@
         public string imageUrl { get; set; }
         public int quantity { get; set; }
         public decimal totalPrice { get; set; }
+        public bool isDeleted { get; set; }
+        public bool isAvailable { get; set; }
     }
 }

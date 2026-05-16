@@ -1626,6 +1626,21 @@
                 ["en"] = "Restaurant not found.",
                 ["ar"] = "المطعم غير موجود."
             },
+            [LocalizationKey.RestaurantNotAvailable] = new()
+            {
+                ["en"] = "Restaurant is not available.",
+                ["ar"] = "المطعم غير متاح."
+            },
+            [LocalizationKey.RestaurantStatusRetrievedSuccessfully] = new()
+            {
+                ["en"] = "Restaurant status retrieved successfully.",
+                ["ar"] = "تم استرجاع حالة المطعم بنجاح."
+            },
+            [LocalizationKey.RestaurantStatusChangeSuccessfully] = new()
+            {
+                ["en"] = "Restaurant status changed successfully.",
+                ["ar"] = "تم تغيير حالة المطعم بنجاح."
+            },
             [LocalizationKey.CannotEditReservation] = new()
             {
                 ["en"] = "You cannot edit this reservation.",

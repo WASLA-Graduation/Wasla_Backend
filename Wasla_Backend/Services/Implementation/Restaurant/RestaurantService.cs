@@ -1,6 +1,4 @@
-﻿using Wasla_Backend.Models.Restaurant;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class RestaurantService : IRestaurantService
     {
@@ -103,6 +101,16 @@ namespace Wasla_Backend.Services.Implementation
             _restaurantRepository.Update(restaurant);
             await _restaurantRepository.SaveChangesAsync();
         }
+        public async Task ChangeStatus(string restaurantId)
+        {
+            await _userAuthorizationService.CheckOwnershipByIdAsync(restaurantId);
+            var restaurant = await _restaurantRepository.GetByUserIdAsync(restaurantId);
+
+            if (restaurant == null)
+                throw new NotFoundException(LocalizationKey.RestaurantNotFound);
+            restaurant.isAvalibale = !restaurant.isAvalibale;
+            await _restaurantRepository.SaveChangesAsync();
+        }
 
         public async Task<PagedResult<GetAllRestaurantsResponse>> GetAll(GetGeneralWithPaginationDto<int> paginationParams)
         {
@@ -148,7 +156,7 @@ namespace Wasla_Backend.Services.Implementation
             });
 
             mapped.numberOfCompletedOrders = numberofOrders;
-            mapped.isAvailable = restaurant.isOnline;
+            mapped.isAvailable = restaurant.isAvalibale;
             mapped.profile = _fileUrlBuilderService.GetMediaUrl(
                 restaurant.ProfilePhoto,
                 MediaType.userImage
@@ -179,16 +187,16 @@ namespace Wasla_Backend.Services.Implementation
             };
         }
 
-        public async Task ChangeStatus(string restaurantId, bool available)
+        public async Task<GetRestaurantStatusResponse>  GetStatus(string restaurantId)
         {
-            await _userAuthorizationService.CheckOwnershipByIdAsync(restaurantId);
             var restaurant = await _restaurantRepository.GetByUserIdAsync(restaurantId);
-
             if (restaurant == null)
                 throw new NotFoundException(LocalizationKey.RestaurantNotFound);
-            restaurant.isOnline=available;
-            await _restaurantRepository.SaveChangesAsync();
-
+            return new GetRestaurantStatusResponse
+            {
+                status = restaurant.isAvalibale
+            };
         }
+
     }
 }
