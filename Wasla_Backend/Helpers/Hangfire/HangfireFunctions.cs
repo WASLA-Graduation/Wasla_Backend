@@ -79,4 +79,26 @@
                 )
             );
     }
+    
+    public async Task DeleteMessagesInChat()
+    {
+        var tenDaysAgo = _dateTimeHelper.Now.AddDays(-10);
+        var messages = await _db.Messages
+            .Where(m => m.sentAt < tenDaysAgo)
+            .ToListAsync();
+
+        _db.Messages.RemoveRange(messages);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task DeletePendingOrders()
+    {
+        var dayAgo = _dateTimeHelper.Now.AddDays(-1);
+        var orders = await _db.Orders
+                    .Where(o => o.status == OrderStatus.Pending && o.createdAt < dayAgo)
+                    .ToListAsync();
+
+        _db.Orders.RemoveRange(orders);
+        await _db.SaveChangesAsync();
+    }
 }

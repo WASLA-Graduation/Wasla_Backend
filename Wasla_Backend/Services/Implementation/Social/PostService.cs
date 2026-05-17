@@ -42,6 +42,9 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task AddPost(AddPostDto dto)
         {
+            if(dto.content == null && (dto.filesDto == null || !dto.filesDto.Any()))
+                throw new BadRequestException(LocalizationKey.PostContentOrFileRequired);
+
             var user = await _userRepository.GetUserByIdAsync(dto.userId);
             if (user == null)
                 throw new NotFoundException(LocalizationKey.UserNotFound);
@@ -68,6 +71,9 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task UpdatePost(UpdatePostDto dto)
         {
+            if (dto.content == null && dto.files.existingFiles == null && dto.files.existingFiles == null)
+                throw new BadRequestException(LocalizationKey.PostContentOrFileRequired);
+
             var post = await _postRepository.GetByIdAsync(dto.id);
             if (post == null)
                 throw new NotFoundException(LocalizationKey.PostNotFound);

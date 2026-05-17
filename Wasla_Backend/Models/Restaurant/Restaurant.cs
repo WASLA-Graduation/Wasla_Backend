@@ -15,6 +15,7 @@
             set => gallery = JsonSerializer.Serialize(value);
         }
 
+        public bool isAvalibale { get; set; } = true;
         public ICollection<MenuItem> items { get; set; }
         public ICollection<MenuItemCategory> categories { get; set; }
     }

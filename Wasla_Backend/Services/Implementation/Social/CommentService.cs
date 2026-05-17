@@ -38,6 +38,9 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task AddComment(AddCommentDto dto)
         {
+            if(dto.content == null && dto.file == null)
+                throw new BadRequestException(LocalizationKey.CommentContentOrFileRequired);
+
             var post = await _postRepository.GetByIdAsync(dto.postId);
 
             if (post == null)
@@ -70,9 +73,9 @@ namespace Wasla_Backend.Services.Implementation
             await _commentRepository.AddAsync(comment);
             await _commentRepository.SaveChangesAsync();
             var metadata = new Dictionary<string, string>
-{
-    { "UserName", resident.FullName ?? "User" }
-};
+            {
+                { "UserName", resident.FullName ?? "User" }
+            };
             var image=_fileUrlBuilderService.GetMediaUrl(resident.ProfilePhoto, MediaType.userImage);
             var postcomment=string.Concat(dto.postId," , ",comment.id);
 
@@ -88,6 +91,9 @@ namespace Wasla_Backend.Services.Implementation
 
         public async Task UpdateComment(UpdateCommentDto dto)
         {
+            if (dto.content == null && dto.file == null)
+                throw new BadRequestException(LocalizationKey.CommentContentOrFileRequired);
+
             var comment = await _commentRepository.GetByIdAsync(dto.commentId);
             if (comment == null)
                 throw new NotFoundException(LocalizationKey.CommentNotFound);

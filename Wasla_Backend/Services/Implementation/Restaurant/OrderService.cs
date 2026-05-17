@@ -11,6 +11,7 @@
         private readonly IFileUrlBuilderService _fileUrlBuilderService;
         private readonly IUserRepository _userRepository;
         private readonly IPaymentService _paymentService;
+        private readonly IRestaurantRepository _restaurantRepository;
         private readonly IUserAuthorizationService _userAuthorizationService;
 
         public OrderService(
@@ -23,6 +24,7 @@
             IFileUrlBuilderService fileUrlBuilderService,
             IUserRepository userRepository,
             IPaymentService paymentService,
+            IRestaurantRepository restaurantRepository,
             IUserAuthorizationService userAuthorizationService)
         {
             _cartRepo = cartRepo;
@@ -34,6 +36,7 @@
             _fileUrlBuilderService = fileUrlBuilderService;
             _userRepository = userRepository;
             _paymentService = paymentService;
+            _restaurantRepository = restaurantRepository;
             _userAuthorizationService = userAuthorizationService;
         }
 
@@ -45,6 +48,13 @@
                 throw new NotFoundException(LocalizationKey.CartIsEmpty);
 
             await _userAuthorizationService.CheckOwnershipByIdAsync(cart.residentId);
+
+            var restaurant = await _restaurantRepository.GetByIdAsync(cart.restaurantId);
+            if (restaurant == null)
+                throw new NotFoundException(LocalizationKey.RestaurantNotFound);
+
+            if (!restaurant.isAvalibale)
+                throw new BadRequestException(LocalizationKey.RestaurantNotAvailable);
 
             var invalidItems = cart.items
                 .Where(x => x.menuItem.isDeleted || !x.menuItem.isAvailable)
@@ -103,6 +113,7 @@
                 orderId = order.id
             };
         }
+
         public async Task StartPreparingOrder(int orderId)
         {
             var order = await _orderRepo.GetOrderDetails(orderId);

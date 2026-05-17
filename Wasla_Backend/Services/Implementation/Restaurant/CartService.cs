@@ -90,6 +90,8 @@
             {
                 cartItemId = ci.id,
                 menuItemId = ci.menuItemId,
+                isAvailable = ci.menuItem.isAvailable,
+                isDeleted = ci.menuItem.isDeleted,
                 menuItemCategoryName = ci.menuItem.category.name.GetText(dto.lan),
                 quantity = ci.quantity,
                 totalPrice = ci.price * ci.quantity,

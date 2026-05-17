@@ -32,6 +32,23 @@
                                              dto.lan));
         }
 
+        [Authorize(Roles = "restaurant")]
+        [HttpPut("ChangeStatus")]
+        public async Task<IActionResult> UpdateStatus([FromQuery] LanDto lanDto)
+        {
+            var userID = User.GetUserId();
+            await _restaurantService.ChangeStatus(userID);
+            return Ok(ResponseHelper.Success(LocalizationKey.RestaurantStatusChangeSuccessfully, lanDto.lan));
+        }
+
+        [Authorize(Roles = "restaurant,resident")]
+        [HttpGet("Status")]
+        public async Task<IActionResult> GetStatus(string userId ,[FromQuery] LanDto lanDto)
+        {
+            var status = await _restaurantService.GetStatus(userId);
+            return Ok(ResponseHelper.Success(LocalizationKey.RestaurantStatusRetrievedSuccessfully, lanDto.lan, status));
+        }
+
         [HttpGet("Restaurants")]
         public async Task<IActionResult> GetRestaurants([FromQuery] GetGeneralWithPaginationDto<int> dto)
         {
@@ -62,5 +79,6 @@
                                              dto.lan,
                                              charts));
         }
+    
     }
 }
