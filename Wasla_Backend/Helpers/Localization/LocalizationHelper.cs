@@ -1236,6 +1236,11 @@
                 ["en"] = "Driver not found.",
                 ["ar"] = "السائق غير موجود."
             },
+            [LocalizationKey.GetDriversInAreaSuccessfully] = new()
+            {
+                ["en"] = "Drivers in area retrieved successfully.",
+                ["ar"] = "تم جلب السائقين في المنطقة بنجاح."
+            },
             [LocalizationKey.CheckRideSuccessFully]=new()
             {
                 ["en"]= "Is In Ride Checked SuccessFully",

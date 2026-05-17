@@ -332,6 +332,7 @@
 
         #region Driver
         DriverNotFound,
+        GetDriversInAreaSuccessfully,
         VehicleNumberAlreadyExists,
         CarImagesAreRequired,
         DriverFilesAreRequired,

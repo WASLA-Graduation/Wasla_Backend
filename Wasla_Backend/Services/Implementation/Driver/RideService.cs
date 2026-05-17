@@ -12,6 +12,7 @@
         private readonly IFileUrlBuilderService _fileUrlBuilderService;
         private readonly IEntityLoader _entityLoader;
         private readonly IUserAuthorizationService _userAuthorizationService;
+        private readonly ICacheManager _cacheManager;
 
 
         public RideService(
@@ -24,7 +25,8 @@
             IHubContext<RideHub> hub,
             IFileUrlBuilderService fileUrlBuilderService,
             IEntityLoader entityLoader,
-            IUserAuthorizationService userAuthorizationService
+            IUserAuthorizationService userAuthorizationService,
+            ICacheManager cacheManager
         )
         {
             _rideRepository = rideRepository;
@@ -37,6 +39,41 @@
             _entityLoader = entityLoader;
             _fileUrlBuilderService = fileUrlBuilderService;
             _userAuthorizationService = userAuthorizationService;
+            _cacheManager = cacheManager;
+        }
+        public async Task<List<DriverInAreaDto>> GetDriversInArea(
+    double latitude, double longitude, double radiusKm = 5.0)
+        {
+            var allOnlineDriversIds = await _driverRepository.GetAllOnlineDriversIdsWithVehicleType();
+
+            var driversInArea = new List<DriverInAreaDto>();
+
+            foreach (var driver in allOnlineDriversIds)
+            {
+                var key = $"TrackingDriver_{driver.DriverId}";
+                var location = _cacheManager.Get<TrackingDriverDto>(key);
+
+                if (location == null)
+                    continue;
+
+                var distance = GeoHelper.CalculateDistance(
+                    latitude, longitude,
+                    location.Latitude, location.Longitude);
+
+                if (distance <= radiusKm)
+                {
+                    driversInArea.Add(new DriverInAreaDto
+                    {
+                        DriverId = driver.DriverId,
+                        Latitude = location.Latitude,
+                        Longitude = location.Longitude,
+                        VehicleType = driver.VehicleType,
+                        DistanceKm = distance
+                    });
+                }
+            }
+
+            return driversInArea.OrderBy(d => d.DistanceKm).ToList();
         }
 
         public async Task<int> AcceptRide(int rideId, string driverId, string lan)
