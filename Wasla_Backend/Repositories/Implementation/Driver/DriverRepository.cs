@@ -79,5 +79,16 @@ namespace Wasla_Backend.Repositories.Implementation.Drivers
         {
             return _context.Drivers.AnyAsync(d => d.VehicleNumber == vehicleNumber);
         }
+        public async Task<List<OnlineDriverWithVehicleDto>> GetAllOnlineDriversIdsWithVehicleType()
+        {
+            return await _context.Drivers
+                .Where(d => d.DriverStatus==DriverStatus.Online)
+                .Select(d => new OnlineDriverWithVehicleDto
+                {
+                    DriverId = d.Id,
+                    VehicleType =(VehicleType)d.VehicleType
+                })
+                .ToListAsync();
+        }
     }
 }

@@ -10,7 +10,8 @@
         public string? VehicleNumber { get; set; }
         public string VehicleImage { get; set; }
         public string VehicleColor { get; set; }
-
+        public double PickUpLatitude { get; set; }
+        public double PickUpLongitude { get; set; }
 
 
         public string DriverPhone { get; set; }

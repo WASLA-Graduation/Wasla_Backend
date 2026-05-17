@@ -103,5 +103,11 @@ namespace Wasla_Backend.Controllers.Driver
             var result = await _rideServices.IsInRide(userId);
             return Ok(ResponseHelper.Success(LocalizationKey.CheckRideSuccessFully ,lan ,result));
         }
+        [HttpGet("drivers-in-area")]
+        public async Task<IActionResult> GetDriversInArea([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double radiusKm = 5.0, string lan = "en")
+        {
+            var result = await _rideServices.GetDriversInArea(latitude, longitude, radiusKm);
+            return Ok(ResponseHelper.Success(LocalizationKey.GetDriversInAreaSuccessfully, lan, result));
+        }
     }
 }

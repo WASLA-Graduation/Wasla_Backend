@@ -89,7 +89,9 @@ namespace Wasla_Backend.Repositories.Implementation.driver
                     r.PickUpPlace,
                     r.DropOffPlace,
                     r.price,
-                    r.Date
+                    r.Date,
+                    r.PickupLatitude,
+                    r.PickupLongitude
                 })
                 .FirstOrDefaultAsync();
 
@@ -110,7 +112,9 @@ namespace Wasla_Backend.Repositories.Implementation.driver
                 PickUpPlace = raw.PickUpPlace,
                 DropOffPlace = raw.DropOffPlace,
                 Price = raw.price,
-                startRide = raw.Date
+                startRide = raw.Date,
+                PickUpLatitude = raw.PickupLatitude,
+                PickUpLongitude = raw.PickupLongitude
             };
         }
 
@@ -204,10 +208,7 @@ namespace Wasla_Backend.Repositories.Implementation.driver
         {
             return await _context.rides
                 .Where(r =>
-                    (r.ResidentId == userId || r.DriverId == userId) &&
-                    (r.Status == RideStatus.InProgress ||
-                     r.Status == RideStatus.Accepted ||
-                     r.Status == RideStatus.Pending))
+               (r.ResidentId == userId || r.DriverId == userId) && r.Status==RideStatus.Accepted)
                 .Select(r => (int?)r.Id)
                 .FirstOrDefaultAsync();
         }

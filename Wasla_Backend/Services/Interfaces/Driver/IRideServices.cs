@@ -18,6 +18,7 @@ namespace Wasla_Backend.Services.Interfaces.Driver
         public Task<int> ChooseDriver(ChooseDriverDto chooseDriverDto, string lan);
         public Task<int> RejectRide(int rideId, string driverId, string lan);
         public Task<int?> IsInRide(string userId);
+        public Task<List<DriverInAreaDto>> GetDriversInArea(double latitude, double longitude, double radiusKm = 5.0);
 
 
 
