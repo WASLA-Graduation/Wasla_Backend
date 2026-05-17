@@ -315,7 +315,14 @@
                 TitleEn = "Order Cancelled ❌",
                 BodyEn  = "{UserName} has cancelled the order. You can check the details."
             },
-
+            new NotificationTemplate
+            {
+                Type    = NotificationType.restaurantReservationCancelled,
+                TitleAr = "تم إلغاء الحجز ❌",
+                BodyAr  = "{UserName} قام بإلغاء الحجز. يمكنك مراجعة التفاصيل.",
+                TitleEn = "Reservation Cancelled ❌",
+                BodyEn  = "{UserName} has cancelled the reservation. You can check the details."
+            },
             #endregion
         };
     }

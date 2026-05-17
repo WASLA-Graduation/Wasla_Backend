@@ -13,6 +13,7 @@
         doctorCompleteInfoScreen,
         doctorBookingScreen,
         doctorEditBookingScreen,
+        restaurantReservationCancelled,
         doctorCancelBookingScreen,
         messageReceived,
         driverCompleteInfoScreen,

@@ -1078,6 +1078,16 @@
                 ["en"] = "Post not found.",
                 ["ar"] = "المنشور غير موجود."
             },
+            [LocalizationKey.CommentContentOrFileRequired] = new()
+            {
+                ["en"] = "Comment content or file is required.",
+                ["ar"] = "يجب إدخال محتوى أو ملف للتعليق."
+            },
+            [LocalizationKey.PostContentOrFileRequired] = new()
+            {
+                ["en"] = "Post content or file is required.",
+                ["ar"] = "يجب إدخال محتوى أو ملف للمنشور."
+            },
             [LocalizationKey.ReportNotFound] = new()
             {
                 ["en"] = "Report not found.",
@@ -1404,7 +1414,17 @@
                 ["en"] = "User profile retrieved successfully.",
                 ["ar"] = "تم جلب ملف المستخدم بنجاح."
             },
+            [LocalizationKey.MessageCannotBeEmpty] = new()
+            {
+                ["en"] = "Message cannot be empty.",
+                ["ar"] = "لا يمكن إرسال رسالة فارغة."
+            },
 
+            [LocalizationKey.InvalidChat] = new()
+            {
+                ["en"] = "Invalid chat operation.",
+                ["ar"] = "عملية محادثة غير صالحة."
+            },
             [LocalizationKey.SuccessToMarkAsRead] = new()
             {
                 ["en"] = "Marked as read successfully.",

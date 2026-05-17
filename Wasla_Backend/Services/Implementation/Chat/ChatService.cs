@@ -33,8 +33,39 @@
 
         public async Task AddMessage(AddMessageDto dto)
         {
-            var chat = await _chatRepository.GetChatByParticipantsAsync(dto.senderId, dto.reciverId);
-            
+            if (string.IsNullOrWhiteSpace(dto.messageText)
+                && dto.audio == null
+                && (dto.files == null || !dto.files.Any()))
+            {
+                throw new BadRequestException(LocalizationKey.MessageCannotBeEmpty);
+            }
+
+            if (dto.senderId == dto.reciverId)
+                throw new BadRequestException(LocalizationKey.InvalidChat);
+
+            var sender = await _userRepository.GetUserByIdAsync(dto.senderId);
+
+            if (sender == null)
+                throw new NotFoundException(LocalizationKey.UserNotFound);
+
+            var receiver = await _userRepository.GetUserByIdAsync(dto.reciverId);
+
+            if (receiver == null)
+                throw new NotFoundException(LocalizationKey.UserNotFound);
+
+            var duplicateMessage = await _messageRepository.AnyAsync(x =>
+                x.senderId == dto.senderId &&
+                x.receiverId == dto.reciverId &&
+                x.messageText == dto.messageText &&
+                x.sentAt >= _dateTimeHelper.Now.AddSeconds(-5)
+            );
+
+            if (duplicateMessage)
+                return;
+
+            var chat = await _chatRepository
+                .GetChatByParticipantsAsync(dto.senderId, dto.reciverId);
+
             if (chat == null)
             {
                 chat = new Chat
@@ -42,6 +73,7 @@
                     senderId = dto.senderId,
                     receiverId = dto.reciverId,
                 };
+
                 await _chatRepository.AddAsync(chat);
                 await _chatRepository.SaveChangesAsync();
             }
@@ -53,67 +85,112 @@
                 receiverId = dto.reciverId,
                 messageText = dto.messageText,
                 type = dto.type,
-                sentAt = _dateTimeHelper.Now
+                sentAt = _dateTimeHelper.Now,
+                isSent = true
             };
 
             if (dto.audio != null)
+            {
                 message.audio = await _fileService.AddFileAsync(
                     dto.audio,
                     _fileUrlBuilderService.GetPath(MediaType.chatFile)
                 );
+            }
 
             if (dto.files != null && dto.files.Any())
+            {
                 message.files = await _fileService.AddFilesAsync(
                     dto.files,
                     _fileUrlBuilderService.GetPath(MediaType.chatFile)
                 );
+            }
 
             await _messageRepository.AddAsync(message);
             await _messageRepository.SaveChangesAsync();
 
-           
-            var receiver = await _userRepository.GetUserByIdAsync(dto.reciverId);
-            var sender = await _userRepository.GetUserByIdAsync(dto.senderId);
-            var senderImage = _fileUrlBuilderService.GetMediaUrl(sender.ProfilePhoto, MediaType.userImage);
+            var senderImage = _fileUrlBuilderService.GetMediaUrl(
+                sender.ProfilePhoto,
+                MediaType.userImage
+            );
 
             var messageDto = new MessageHubDto
             {
                 id = message.id,
                 chatId = message.chatId,
                 senderId = message.senderId,
-                profileReceiver = _fileUrlBuilderService.GetMediaUrl(receiver.ProfilePhoto, MediaType.userImage),
+
+                profileReceiver =
+                    _fileUrlBuilderService.GetMediaUrl(
+                        receiver.ProfilePhoto,
+                        MediaType.userImage
+                    ),
+
                 nameReceiver = receiver.FullName,
                 nameSender = sender.FullName,
+
                 profileSender = senderImage,
+
                 receiverId = message.receiverId,
                 messageText = message.messageText,
-                audio = _fileUrlBuilderService.GetMediaUrl(message.audio, MediaType.chatFile),
+
+                audio =
+                    _fileUrlBuilderService.GetMediaUrl(
+                        message.audio,
+                        MediaType.chatFile
+                    ),
+
                 type = message.type,
                 isMine = true,
                 sentAt = message.sentAt,
                 readAt = message.readAt,
                 isSent = message.isSent,
                 isEdited = message.isEdited,
-                files = message.files.Select(f => _fileUrlBuilderService.GetMediaUrl(f, MediaType.chatFile)).ToList()
+
+                files = message.files
+                    .Select(f =>
+                        _fileUrlBuilderService.GetMediaUrl(
+                            f,
+                            MediaType.chatFile
+                        ))
+                    .ToList()
             };
 
             await _hubContext.Clients
-                .Users(new List<string> { message.senderId, message.receiverId})
+                .Users(new List<string>
+                {
+            message.senderId,
+            message.receiverId
+                })
                 .SendAsync("ReceiveMessage", messageDto);
+
             var metadata = new Dictionary<string, string>
-            {
-                { "SenderName", sender.FullName ?? "User" }
-            };
-            var refernce=string.Concat(sender.FullName, " , ",sender.Id , " , " , senderImage);
-            var photo = _fileUrlBuilderService.GetMediaUrl(sender.ProfilePhoto, MediaType.userImage);
-            Hangfire.BackgroundJob.Enqueue<NotificationFunction>(x => x.sendNotification(
-                receiver.Id,
-                NotificationType.messageReceived,
-                refernce,
-                photo,   
-                "en",
-                metadata
-            ));
+    {
+        { "SenderName", sender.FullName ?? "User" }
+    };
+
+            var refernce = string.Concat(
+                sender.FullName,
+                " , ",
+                sender.Id,
+                " , ",
+                senderImage
+            );
+
+            var photo =
+                _fileUrlBuilderService.GetMediaUrl(
+                    sender.ProfilePhoto,
+                    MediaType.userImage
+                );
+
+            Hangfire.BackgroundJob.Enqueue<NotificationFunction>(x =>
+                x.sendNotification(
+                    receiver.Id,
+                    NotificationType.messageReceived,
+                    refernce,
+                    photo,
+                    "en",
+                    metadata
+                ));
         }
         public async Task DeleteMessage(int messageId, string userId)
         {
@@ -178,6 +255,13 @@
                 throw new NotFoundException(LocalizationKey.MessageNotFoundOrNoPermission);
 
             await _userAuthorizationService.CheckOwnershipByIdAsync(message.senderId);
+
+            if (string.IsNullOrWhiteSpace(updateMessage.messageText)
+                && updateMessage.newFiles == null
+                && (updateMessage.existFiles == null))
+            {
+                throw new BadRequestException(LocalizationKey.MessageCannotBeEmpty);
+            }
 
             message.messageText = updateMessage.messageText;
             message.type = updateMessage.type;

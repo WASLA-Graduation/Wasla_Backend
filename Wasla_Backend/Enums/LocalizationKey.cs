@@ -243,6 +243,8 @@
         #region Posts
         SuccessToCreatePost,
         SuccessToReport,
+        CommentContentOrFileRequired,
+        PostContentOrFileRequired,
         ReportDeleted,
         ReportNotFound,
         FailedToCreatePost,
@@ -368,6 +370,8 @@
         #region ChatAndUserKeys
 
         SuccessToGetUsers,
+        MessageCannotBeEmpty,
+        InvalidChat,
         SuccessToMarkAsRead,
         NoUsersFound,
         FailedToGetUsers,

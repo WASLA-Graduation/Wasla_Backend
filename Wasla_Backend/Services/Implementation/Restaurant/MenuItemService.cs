@@ -9,12 +9,14 @@
         private readonly IFileUrlBuilderService _fileUrlBuilderService;
         private readonly IFileService _fileService;
         private readonly IUserAuthorizationService _userAuthorizationService;
+        private readonly IHubContext<MenuHub> _hubContext;
 
         public MenuItemService
             (IMenuItemRepository menuItemRepository, IRestaurantRepository restaurantRepository,
             IMenuItemCategoryRepository menuItemCategoryRepository, IMapper mapper,
             IFileUrlBuilderService fileUrlBuilderService, IFileService fileService,
-            IUserAuthorizationService userAuthorizationService)
+            IUserAuthorizationService userAuthorizationService,
+            IHubContext<MenuHub> hubContext)
         {
             _menuItemRepository = menuItemRepository;
             _restaurantRepository = restaurantRepository;
@@ -23,6 +25,7 @@
             _fileUrlBuilderService = fileUrlBuilderService;
             _fileService = fileService;
             _userAuthorizationService = userAuthorizationService;
+            _hubContext = hubContext;
         }
 
         public async Task AddItem(AddMenuItemDto dto)
@@ -80,6 +83,14 @@
             menuItem.isAvailable = !menuItem.isAvailable;
             _menuItemRepository.Update(menuItem);
             await _menuItemRepository.SaveChangesAsync();
+
+            await _hubContext.Clients
+                .Group($"restaurant_{menuItem.restaurantId}")
+                .SendAsync("MenuItemStatusChanged", new MenuItemRealTimeResponse
+                {
+                    menuItemId = menuItem.id,
+                    isAvailable = menuItem.isAvailable
+                });
         }
 
         public async Task DeleteItem(int id)
@@ -93,6 +104,13 @@
             menuItem.isDeleted = true;
             _menuItemRepository.Update(menuItem);
             await _menuItemRepository.SaveChangesAsync();
+
+            await _hubContext.Clients
+                .Group($"restaurant_{menuItem.restaurantId}")
+                .SendAsync("MenuItemDeleted", new MenuItemDeletedResponse
+                {
+                    menuItemId = menuItem.id,
+                });
         }
 
         public async Task<PagedResult<GetMenuItemDto>> GetMenuItemsByRestaurantIdAsync(GetGeneralWithPaginationDto<string> dto)
