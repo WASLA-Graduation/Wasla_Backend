@@ -131,7 +131,8 @@
             return new LocationDto
             {
                 Latitude = location.Latitude,
-                Longitude = location.Longitude
+                Longitude = location.Longitude,
+                VehicleType=location.VehicleType 
             };
         }
 

@@ -101,7 +101,7 @@ namespace Wasla_Backend.Controllers.Driver
         public async Task<IActionResult> IsInRide(string userId,string lan="en")
         {
             var result = await _rideServices.IsInRide(userId);
-            return Ok(ResponseHelper.Success(LocalizationKey.CheckRideSuccessFully));
+            return Ok(ResponseHelper.Success(LocalizationKey.CheckRideSuccessFully,lan,result));
         }
     }
 }
