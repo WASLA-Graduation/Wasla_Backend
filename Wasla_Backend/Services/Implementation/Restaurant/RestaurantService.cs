@@ -11,6 +11,7 @@
         private readonly IReservationRepository _reservationRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IUserAuthorizationService _userAuthorizationService;
+        private readonly IHubContext<RestaurantHub> _hubContext;
 
         public RestaurantService
             (
@@ -18,7 +19,8 @@
             IFileService fileService, IMapper mapper, IFileUrlBuilderService fileUrlBuilderService,
             IGenericRepository<RestaurantCategory> restaurantCategoryRepo,
             IReservationRepository reservationRepository, IOrderRepository orderRepository,
-            IUserAuthorizationService userAuthorizationService
+            IUserAuthorizationService userAuthorizationService,
+            IHubContext<RestaurantHub> hubContext
             )
         {
             _restaurantRepository = restaurantRepository;
@@ -30,6 +32,7 @@
             _reservationRepository = reservationRepository;
             _orderRepository = orderRepository;
             _userAuthorizationService = userAuthorizationService;
+            _hubContext = hubContext;
         }
 
         public async Task CompleteProfile(CompleteRegisterRestaurantDto dto)
@@ -110,6 +113,14 @@
                 throw new NotFoundException(LocalizationKey.RestaurantNotFound);
             restaurant.isAvalibale = !restaurant.isAvalibale;
             await _restaurantRepository.SaveChangesAsync();
+
+            await _hubContext.Clients
+            .All
+            .SendAsync("RestaurantStatusChanged", new RestaurantStatusChangedResponse
+            {
+                restaurantId = restaurant.Id,
+                isAvailable = restaurant.isAvalibale
+            });
         }
 
         public async Task<PagedResult<GetAllRestaurantsResponse>> GetAll(GetGeneralWithPaginationDto<int> paginationParams)

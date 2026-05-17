@@ -1,4 +1,6 @@
-﻿namespace Wasla_Backend.Services.Implementation
+﻿using Wasla_Backend.DTOs.RestaurantDTOS;
+
+namespace Wasla_Backend.Services.Implementation
 {
     public class MenuItemService : IMenuItemService
     {
@@ -46,6 +48,19 @@
             menuItem.imageUrl = image;
             await _menuItemRepository.AddAsync(menuItem);
             await _menuItemRepository.SaveChangesAsync();
+
+            await _hubContext.Clients
+            .Group($"restaurant_{menuItem.restaurantId}")
+            .SendAsync("MenuItemAdded", new MenuItemRTResponse
+            {
+                id = menuItem.id,
+                name = menuItem.name,
+                price = menuItem.price,
+                imageUrl = _fileUrlBuilderService
+                    .GetMediaUrl(menuItem.imageUrl, MediaType.restaurantImage),
+                isAvailable = menuItem.isAvailable,
+                categoryId = menuItem.categoryId
+            });
         }
 
         public async Task UpdateItem(UpdateMenuItemDto dto)
@@ -67,6 +82,19 @@
 
             _menuItemRepository.Update(menuItem);
             await _menuItemRepository.SaveChangesAsync();
+
+            await _hubContext.Clients
+            .Group($"restaurant_{menuItem.restaurantId}")
+            .SendAsync("MenuItemUpdated", new MenuItemRTResponse
+            {
+                id = menuItem.id,
+                name = menuItem.name,
+                price = menuItem.price,
+                imageUrl = _fileUrlBuilderService
+                    .GetMediaUrl(menuItem.imageUrl, MediaType.restaurantImage),
+                isAvailable = menuItem.isAvailable,
+                categoryId = menuItem.categoryId
+            });
         }
         
         public async Task ChangeStatus(ChangeStatusItemMenuDto dto)

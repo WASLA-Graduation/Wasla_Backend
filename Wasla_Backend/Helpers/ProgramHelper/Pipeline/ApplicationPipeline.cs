@@ -34,6 +34,7 @@
             app.MapHub<OrderHub>("/orderHub");
             app.MapHub<MenuHub>("/menuHub");
             app.MapHub<ReservationHub>("/reservationHub");
+            app.MapHub<RestaurantHub>("/restaurantHub");
 
             app.MapControllers();
 

@@ -48,7 +48,8 @@ public static class AuthenticationConfiguration
                          path.StartsWithSegments("/chatHub") ||
                          path.StartsWithSegments("/orderHub") ||
                          path.StartsWithSegments("/menuHub") ||
-                         path.StartsWithSegments("/reservationHub")) 
+                         path.StartsWithSegments("/reservationHub")||
+                         path.StartsWithSegments("/restaurantHub")) 
                          )
                     {
                         context.Token = accessToken;
