@@ -94,7 +94,7 @@
                 isDeleted = ci.menuItem.isDeleted,
                 menuItemCategoryName = ci.menuItem.category.name.GetText(dto.lan),
                 quantity = ci.quantity,
-                totalPrice = ci.price * ci.quantity,
+                totalPrice = (decimal) ci.menuItem.discountPrice * ci.quantity,
                 menuItemName = ci.menuItem.name.GetText(dto.lan),
                 imageUrl = _fileUrlBuilderService.GetMediaUrl(ci.menuItem.imageUrl, MediaType.restaurantImage)
             }).ToList();
