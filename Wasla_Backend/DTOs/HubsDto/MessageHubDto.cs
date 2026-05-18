@@ -25,5 +25,6 @@
         public bool isSent { get; set; }
         public bool isEdited { get; set; }
         public List<string>? files { get; set; }
+        public string? LocalId { get; set; }
     }
 }

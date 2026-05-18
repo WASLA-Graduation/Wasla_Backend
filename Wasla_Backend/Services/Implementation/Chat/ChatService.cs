@@ -145,7 +145,7 @@
                 readAt = message.readAt,
                 isSent = message.isSent,
                 isEdited = message.isEdited,
-
+                LocalId = dto.LocalId,
                 files = message.files
                     .Select(f =>
                         _fileUrlBuilderService.GetMediaUrl(
