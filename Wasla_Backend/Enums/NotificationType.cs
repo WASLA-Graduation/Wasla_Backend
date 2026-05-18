@@ -13,7 +13,6 @@
         doctorCompleteInfoScreen,
         doctorBookingScreen,
         doctorEditBookingScreen,
-        restaurantReservationCancelled,
         doctorCancelBookingScreen,
         messageReceived,
         driverCompleteInfoScreen,
@@ -36,6 +35,7 @@
         SocialHidden,
         orderCancelled,
         restaurantReservationUpdated,
-        rideRejected
+        rideRejected,
+        restaurantReservationCancelled,
     }
 }

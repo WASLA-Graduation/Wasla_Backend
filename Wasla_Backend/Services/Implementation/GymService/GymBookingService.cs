@@ -122,7 +122,7 @@
             await _gymBookingRepository.AddAsync(gymBooking);
             await _gymBookingRepository.SaveChangesAsync();
 
-            if (gymBooking.isPaymentOnline)
+            if (gymBookDto.isPaymentOnline)
             {
                 Hangfire.BackgroundJob.Schedule(
                 () => CheckPayment(filePath, gymBooking.Id, gym.BusinessName, gymPhotoUrl, lan),
