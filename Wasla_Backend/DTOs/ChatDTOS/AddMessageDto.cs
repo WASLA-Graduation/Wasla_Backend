@@ -8,5 +8,6 @@
         public IFormFile? audio { get; set; }
         public MessageType type { get; set; }
         public List<IFormFile>? files { get; set; }
+        public string? LocalId { get; set; }
     }
 }
