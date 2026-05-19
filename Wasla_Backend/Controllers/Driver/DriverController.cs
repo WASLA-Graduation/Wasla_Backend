@@ -5,6 +5,7 @@ namespace Wasla_Backend.Controllers.Driver
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "driver")]
     public class DriverController : ControllerBase
     {
         private readonly IDriverService _driverService;
