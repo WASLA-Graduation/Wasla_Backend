@@ -8,6 +8,5 @@
         [Required]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
-        public string OTP {  get; set; }
     }
 }
