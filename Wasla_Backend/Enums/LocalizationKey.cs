@@ -405,6 +405,7 @@
         #region Restaurant
 
         RestaurantNotFound,
+        InvalidNumber,
         RestaurantCreatedSuccessfully,
         CannotCancelReservation,
         CannotEditReservation,

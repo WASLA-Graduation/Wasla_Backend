@@ -1,6 +1,4 @@
-﻿using Wasla_Backend.DTOs.RestaurantDTOS;
-
-namespace Wasla_Backend.Services.Implementation
+﻿namespace Wasla_Backend.Services.Implementation
 {
     public class MenuItemService : IMenuItemService
     {

@@ -45,6 +45,9 @@
 
             if (resident == null)
                 throw new NotFoundException(LocalizationKey.ResidentNotFound);
+           
+            if (dto.numberOfPersons <= 0)
+                throw new BadRequestException(LocalizationKey.InvalidNumber);
 
             var reservation = new Reservations
             {
@@ -268,6 +271,9 @@
 
             if (reservation.status != Status.Pending)
                 throw new BadRequestException(LocalizationKey.CannotEditReservation);
+            
+            if (dto.numberOfPersons <= 0)
+                throw new BadRequestException(LocalizationKey.InvalidNumber);
 
             reservation.numberOfPersons = dto.numberOfPersons;
             reservation.reservationTime = dto.reservationTime;

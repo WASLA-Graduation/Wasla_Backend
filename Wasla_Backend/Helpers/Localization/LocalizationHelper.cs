@@ -1651,6 +1651,11 @@
                 ["en"] = "Restaurant not found.",
                 ["ar"] = "المطعم غير موجود."
             },
+            [LocalizationKey.InvalidNumber] = new()
+            {
+                ["en"] = "Invalid number.",
+                ["ar"] = "رقم غير صالح."
+            },
             [LocalizationKey.RestaurantNotAvailable] = new()
             {
                 ["en"] = "Restaurant is not available.",
